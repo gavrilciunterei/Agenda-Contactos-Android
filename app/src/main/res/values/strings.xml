@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Contactos</string>
+    <string name="anadir">+</string>
+    <string name="buscar">Buscar</string>
+
+    <string name="nombre">Nombre</string>
+    <string name="apodo">Apodo</string>
+    <string name="empresa">Empresa</string>
+    <string name="telefono">Telefono</string>
+    <string name="correo">Correo</string>
+    <string name="notas">Notas</string>
+    <string name="anadirContacto">Añadir</string>
+
+</resources>

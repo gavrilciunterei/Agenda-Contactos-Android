@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Anadir">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageView
+            android:id="@+id/imageViewimg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:srcCompat="@mipmap/usuario_nulo"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/buttonAbrirGaleria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Abrir galeria" />
+
+        <EditText
+            android:id="@+id/editTextNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/nombre"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextApodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/apodo"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/empresa"
+            android:inputType="textPersonName" />
+
+        <Spinner
+            android:id="@+id/spinnerTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/editTextTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/telefono"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/correo"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextNotas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/notas"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/buttonAnadir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/anadirContacto" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
