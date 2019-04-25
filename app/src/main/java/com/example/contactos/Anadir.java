@@ -205,7 +205,6 @@ public class Anadir extends AppCompatActivity {
         public void onClick(View view) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View rowView = inflater.inflate(R.layout.diseno_notas, null);
-            // Add the new row before the add field button.
             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
         }
     }
