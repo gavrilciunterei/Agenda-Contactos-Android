@@ -46,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
     @Override
-    public void onResume()
-    {  // After a pause OR at startup
-        super.onResume();
-        //Refresh your stuff here
+    public void onRestart() {
+        super.onRestart();
+        this.listView.setAdapter(new Adaptador(this, getContacto()));
     }
+
 
     private class newAnadir implements View.OnClickListener {
 

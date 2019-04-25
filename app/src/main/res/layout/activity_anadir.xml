@@ -7,6 +7,7 @@
     tools:context=".Anadir">
 
     <LinearLayout
+        android:id="@+id/linear_anadir"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -21,8 +22,8 @@
             android:id="@+id/imageViewimg"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:srcCompat="@mipmap/usuario_nulo"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            app:srcCompat="@mipmap/usuario_nulo" />
 
         <Button
             android:id="@+id/buttonAbrirGaleria"
@@ -75,13 +76,27 @@
             android:hint="@string/correo"
             android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/editTextNotas"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/notas"
-            android:inputType="textPersonName" />
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextNotas"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:ems="10"
+                android:hint="@string/notas"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/buttonAddNotas"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:drawable/ic_input_add" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonAnadir"

@@ -24,7 +24,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "IMG BLOB" +
                 ")";
         String sqlCreateDireccion  = "CREATE TABLE IF NOT EXISTS DIRECCION(" +
-                "ID INTEGER PRIMARY KEY NOT NULL," +
+                "ID INTEGER," +
                 "CALLE VARCHAR," +
                 "NUMERO INTEGER," +
                 "PISO INTEGER," +
@@ -34,15 +34,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "PROCINVIA VARCHAR" +
                 ")";
         String sqlCreateEmail = "CREATE TABLE IF NOT EXISTS EMAIL(" +
-                "ID INTEGER PRIMARY KEY NOT NULL," +
+                "ID INTEGER," +
                 "EMAIL VARCHAR" +
                 ")";
         String sqlCreateNotas = "CREATE TABLE IF NOT EXISTS NOTAS(" +
-                "ID INTEGER PRIMARY KEY NOT NULL," +
+                "ID INTEGER," +
                 "NOTA VARCHAR" +
                 ")";
         String sqlCreateTelefono = "CREATE TABLE IF NOT EXISTS TELEFONO(" +
-                "ID INTEGER PRIMARY KEY NOT NULL," +
+                "ID INTEGER," +
                 "TIPO VARCHAR," +
                 "TELEFONO CARCHAR" +
                 ")";
