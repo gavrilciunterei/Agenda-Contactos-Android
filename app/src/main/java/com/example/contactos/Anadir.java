@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Anadir extends AppCompatActivity {
 
@@ -41,6 +42,8 @@ public class Anadir extends AppCompatActivity {
     private ImageView imageViewimg;
     private Spinner spinnerTipo;
     private long backPressedTime;
+
+    private EditText editTextNotas2;
 
 
     private static final int REQUEST_SELECT_PHOTO = 1;
@@ -84,6 +87,7 @@ public class Anadir extends AppCompatActivity {
         buttonAddNotas.setOnClickListener(new onAddField());
 
 
+        editTextNotas2 = (EditText) findViewById(R.id.editTextNotas2);
 
     }
 
@@ -206,8 +210,10 @@ public class Anadir extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View rowView = inflater.inflate(R.layout.diseno_notas, null);
             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
-        }
+            }
     }
+
+
 
 
 
