@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -43,14 +44,13 @@ public class Anadir extends AppCompatActivity {
     private Spinner spinnerTipo;
     private long backPressedTime;
 
-    private EditText editTextNotas2;
 
 
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
 
-    private LinearLayout parentLinearLayout;
-
+    private LinearLayout mPhonesLayout;
+    private List<String> arrayyNotas;
 
 
     @Override
@@ -81,15 +81,41 @@ public class Anadir extends AppCompatActivity {
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opciones);
         spinnerTipo.setAdapter(adapterSpinner);
 
-        parentLinearLayout = (LinearLayout) findViewById(R.id.linear_anadir);
 
         buttonAddNotas = (Button) findViewById(R.id.buttonAddNotas);
-        buttonAddNotas.setOnClickListener(new onAddField());
+        mPhonesLayout = (LinearLayout) findViewById(R.id.linear_notas_repeat);
+        arrayyNotas = mContact.getPhones();
+        mPhones = new ArrayList<>();
+        if(arrayyNotas.size()>0) {
+            for (int i = 0; i != phones.size(); i++) {
+                addPhoneEditText(phones.get(i));
+            }
+        }
+        else
+        {
+            addPhoneEditText("");
+            arrayyNotas.add("");
+        }
 
+        buttonAddNotas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mPhones.size()<=10) {
+                    addPhoneEditText("");
+                    arrayyNotas.add("");
+                }
+                else
+                    Toast.makeText(getActivity(), "Max limit is 10",
+                            Toast.LENGTH_LONG).show();
+            }
+        });
 
-        editTextNotas2 = (EditText) findViewById(R.id.editTextNotas2);
 
     }
+
+
+
+
 
     private class abrirGaleria implements View.OnClickListener {
 
@@ -135,6 +161,7 @@ public class Anadir extends AppCompatActivity {
             BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
             bmp = drawable.getBitmap();
 
+            //Añadir si te pasas del tamaño dar mensaje
             ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
             bmp.compress(Bitmap.CompressFormat.PNG, 0 , baos);
             byte[] blob = baos.toByteArray();
@@ -200,29 +227,6 @@ public class Anadir extends AppCompatActivity {
         return 0;
     }
 
-
-
-
-
-    private class onAddField implements View.OnClickListener  {
-        @Override
-        public void onClick(View view) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View rowView = inflater.inflate(R.layout.diseno_notas, null);
-            parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
-            }
-    }
-
-
-
-
-
-    public void onDelete(View v) {
-
-        parentLinearLayout.removeView((View) v.getParent());
-
-
-    }
 
 
 
