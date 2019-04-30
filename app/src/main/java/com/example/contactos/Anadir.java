@@ -16,13 +16,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,25 +36,37 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.ViewGroup.*;
+import static com.example.contactos.R.id.editTextNotas;
+
 public class Anadir extends AppCompatActivity {
 
     private SQLiteDatabase db=null;
     private DataBaseHelper usdbh;
+    private final String []opciones={"FIJO","MOVIL"};
+
 
     private EditText editTextNombre, editTextApodo, editTextEmpresa, editTextTelefono, editTextEmail, editTextNotas;
     private Button buttonAnadir, buttonAbrirGaleria;
-    private Button buttonAddNotas;
+    private Button buttonAddNotas, buttonAddTelefonos;
     private ImageView imageViewimg;
     private Spinner spinnerTipo;
     private long backPressedTime;
+    private ArrayAdapter<String> adapterSpinner;
 
+    private EditText editTextNotas2;
+
+    private List<EditText> listaNotas, listaTelefonos;
+    private List<Spinner> spinner_listaTelefonos;
 
 
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
 
-    private LinearLayout mPhonesLayout;
-    private List<String> arrayyNotas;
+    private LinearLayout parentLinearLayout;
+    private EditText edittext_notas, edittext_telefonos;
+    private Spinner spinner_telefonos;
+
 
 
     @Override
@@ -76,46 +92,25 @@ public class Anadir extends AppCompatActivity {
         buttonAnadir = (Button) findViewById(R.id.buttonAnadir);
         buttonAnadir.setOnClickListener(new anadirContacto());
 
-        String []opciones={"FIJO","MOVIL"};
         spinnerTipo = (Spinner) findViewById(R.id.spinnerTipo);
-        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opciones);
+        adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opciones);
         spinnerTipo.setAdapter(adapterSpinner);
+
+        parentLinearLayout = (LinearLayout) findViewById(R.id.linear_anadir);
 
 
         buttonAddNotas = (Button) findViewById(R.id.buttonAddNotas);
-        mPhonesLayout = (LinearLayout) findViewById(R.id.linear_notas_repeat);
-        arrayyNotas = mContact.getPhones();
-        mPhones = new ArrayList<>();
-        if(arrayyNotas.size()>0) {
-            for (int i = 0; i != phones.size(); i++) {
-                addPhoneEditText(phones.get(i));
-            }
-        }
-        else
-        {
-            addPhoneEditText("");
-            arrayyNotas.add("");
-        }
+        buttonAddNotas.setOnClickListener(new onAddFieldNotas());
 
-        buttonAddNotas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mPhones.size()<=10) {
-                    addPhoneEditText("");
-                    arrayyNotas.add("");
-                }
-                else
-                    Toast.makeText(getActivity(), "Max limit is 10",
-                            Toast.LENGTH_LONG).show();
-            }
-        });
+        buttonAddTelefonos = (Button) findViewById(R.id.buttonAddTelefono);
+        buttonAddTelefonos.setOnClickListener(new onAddFieldTelefonos());
 
+
+        listaNotas = new ArrayList<>();
+        listaTelefonos = new ArrayList<>();
+        spinner_listaTelefonos = new ArrayList<>();
 
     }
-
-
-
-
 
     private class abrirGaleria implements View.OnClickListener {
 
@@ -161,7 +156,6 @@ public class Anadir extends AppCompatActivity {
             BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
             bmp = drawable.getBitmap();
 
-            //Añadir si te pasas del tamaño dar mensaje
             ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
             bmp.compress(Bitmap.CompressFormat.PNG, 0 , baos);
             byte[] blob = baos.toByteArray();
@@ -184,17 +178,28 @@ public class Anadir extends AppCompatActivity {
             nuevoRegistroNotas.put("ID", notas.getId());
             nuevoRegistroNotas.put("NOTA",notas.getNota());
 
-            ContentValues nuevoRegistroTelefono = new ContentValues();
-            Telefono telefono  = new Telefono(maxid, spinnerTipo.getSelectedItem().toString(), editTextTelefono.getText().toString());
-            nuevoRegistroTelefono.put("ID",telefono.getId());
-            nuevoRegistroTelefono.put("TIPO",telefono.getTipo());
-            nuevoRegistroTelefono.put("TELEFONO",telefono.getTelefono());
 
+            ContentValues nuevoRegistroTelefono = new ContentValues();
+
+
+            Telefono telefono = new Telefono(maxid, spinnerTipo.getSelectedItem().toString(), editTextTelefono.getText().toString());
+            nuevoRegistroTelefono.put("ID", telefono.getId());
+            nuevoRegistroTelefono.put("TIPO", telefono.getTipo());
+            nuevoRegistroTelefono.put("TELEFONO", telefono.getTelefono());
+            db.insert("TELEFONO", null, nuevoRegistroTelefono);
+
+            for(int i = 0; i < listaTelefonos.size(); i ++) {
+
+                Telefono telefono2 = new Telefono(maxid, spinner_listaTelefonos.get(i).getSelectedItem().toString(), listaTelefonos.get(i).getText().toString());
+                nuevoRegistroTelefono.put("ID", telefono2.getId());
+                nuevoRegistroTelefono.put("TIPO", telefono2.getTipo());
+                nuevoRegistroTelefono.put("TELEFONO", telefono2.getTelefono());
+                db.insert("TELEFONO", null, nuevoRegistroTelefono);
+            }
             try{
                 db.insert("CONTACTO", null, nuevoRegistroContacto);
                 db.insert("EMAIL", null, nuevoRegistroEmail);
                 db.insert("NOTAS", null, nuevoRegistroNotas);
-                db.insert("TELEFONO", null, nuevoRegistroTelefono);
                 mensajeNormalContacto();
 
             }catch (Exception e){
@@ -203,13 +208,6 @@ public class Anadir extends AppCompatActivity {
 
 
         }
-    }
-    public void mensajeNormalContacto()
-    {
-        Toast mensaje =
-                Toast.makeText(getApplicationContext(),
-                        "Contacto añadido correctamente", Toast.LENGTH_SHORT);
-        mensaje.show();
     }
 
 
@@ -227,6 +225,65 @@ public class Anadir extends AppCompatActivity {
         return 0;
     }
 
+
+
+
+
+    private class onAddFieldNotas implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            if(listaNotas.size()<2) {
+                edittext_notas = new EditText(getApplicationContext());
+                edittext_notas.setId(listaNotas.size() + 1);
+
+
+                for (int i = 0; i < listaNotas.size(); i++) {
+                    System.out.println("--------------Notas:" + listaNotas.get(i).getText().toString());
+                }
+
+                listaNotas.add(edittext_notas);
+                parentLinearLayout.addView(edittext_notas, parentLinearLayout.getChildCount() - 1);
+            }else{
+
+                maxCamp();
+
+            }
+
+        }
+    }
+
+    private class onAddFieldTelefonos implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            if(listaTelefonos.size()<2) {
+
+                edittext_telefonos = new EditText(getApplicationContext());
+                edittext_telefonos.setId(listaTelefonos.size() + 1);
+
+                spinner_telefonos = new Spinner(getApplicationContext());
+
+                spinner_telefonos.setId(listaTelefonos.size() + 1);
+                spinner_telefonos.setAdapter(adapterSpinner);
+
+
+                for (int i = 0; i < listaTelefonos.size(); i++) {
+                    System.out.println("--------------Tel:" + listaTelefonos.get(i).getText().toString());
+                }
+
+                listaTelefonos.add(edittext_telefonos);
+                spinner_listaTelefonos.add(spinner_telefonos);
+                parentLinearLayout.addView(edittext_telefonos, parentLinearLayout.getChildCount() - 3);
+                parentLinearLayout.addView(spinner_telefonos, parentLinearLayout.getChildCount() - 4);
+            }else{
+
+                maxCamp();
+
+            }
+
+        }
+    }
 
 
 
@@ -248,6 +305,14 @@ public class Anadir extends AppCompatActivity {
         }
     }
 
+    public void mensajeNormalContacto()
+    {
+        Toast mensaje =
+                Toast.makeText(getApplicationContext(),
+                        "Contacto añadido correctamente", Toast.LENGTH_SHORT);
+        mensaje.show();
+    }
+
 
     public void onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
@@ -259,7 +324,11 @@ public class Anadir extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
     }
 
+    public void maxCamp() {
 
+            Toast.makeText(this, "Solo se pueden añadir 3 campos", Toast.LENGTH_SHORT).show();
+
+    }
 
 
 }
