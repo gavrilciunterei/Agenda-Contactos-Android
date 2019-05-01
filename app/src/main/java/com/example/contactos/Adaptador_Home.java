@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Adaptador extends BaseAdapter {
+public class Adaptador_Home extends BaseAdapter {
 
     private Context context;
     private List<Contacto> listaClientes;
 
-    public Adaptador(Context context, ArrayList<Contacto> listaClientes) {
+    public Adaptador_Home(Context context, ArrayList<Contacto> listaClientes) {
         this.context = context;
         this.listaClientes= listaClientes;
     }
@@ -46,8 +46,7 @@ public class Adaptador extends BaseAdapter {
         View rowView = convertView;
 
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.lista_datos, parent, false);
         }
 
@@ -55,8 +54,8 @@ public class Adaptador extends BaseAdapter {
         ImageView foto= (ImageView) rowView.findViewById(R.id.imageViewContacto);
 
         Contacto contacto = this.listaClientes.get(position);
-        nombre.setText(contacto.getNombre());
 
+        nombre.setText(contacto.getNombre());
         byte[] bytes = contacto.getImg();
         foto.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 

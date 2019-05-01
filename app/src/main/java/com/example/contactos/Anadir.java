@@ -16,29 +16,21 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.ViewGroup.*;
-import static com.example.contactos.R.id.editTextNotas;
-import static com.example.contactos.R.id.edit_query;
 
 public class Anadir extends AppCompatActivity {
 
@@ -55,18 +47,18 @@ public class Anadir extends AppCompatActivity {
     private long backPressedTime;
     private ArrayAdapter<String> adapterSpinner;
 
-    private EditText editTextNotas2;
 
-    private List<EditText> listaNotas, listaTelefonos;
-    private List<Spinner> spinner_listaTelefonos;
 
+    //listviews dinamicos
+    private Button buttonAddTelefono;
+    private ArrayList<String> arrayListTelefonos;
+    private ListView list_telefono;
+
+    private ArrayAdapter<String> arrayAdapter;
 
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
 
-    private LinearLayout parentLinearLayout;
-    private EditText edittext_notas, edittext_telefonos;
-    private Spinner spinner_telefonos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,27 +87,36 @@ public class Anadir extends AppCompatActivity {
         adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opciones);
         spinnerTipo.setAdapter(adapterSpinner);
 
-        parentLinearLayout = (LinearLayout) findViewById(R.id.linear_anadir);
+        buttonAddTelefono = (Button) findViewById(R.id.buttonAddTelefono);
+        buttonAddTelefono.setOnClickListener(new addViewTelefono());
 
+        arrayListTelefonos = new ArrayList<>();
+        list_telefono = (ListView) findViewById(R.id.list_telefono);
+        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListTelefonos);
+        list_telefono.setAdapter(arrayAdapter);
 
-        buttonAddNotas = (Button) findViewById(R.id.buttonAddNotas);
-        buttonAddNotas.setOnClickListener(new onAddFieldNotas());
+        list_telefono.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                arrayAdapter.remove(arrayListTelefonos.get(position));
+                return true;
 
-        buttonAddTelefonos = (Button) findViewById(R.id.buttonAddTelefono);
-        buttonAddTelefonos.setOnClickListener(new onAddFieldTelefonos());
-
-
-        listaNotas = new ArrayList<>();
-        listaTelefonos = new ArrayList<>();
-        spinner_listaTelefonos = new ArrayList<>();
-
-
-
-        listaTelefonos.add(editTextNotas);
-        listaNotas.add(editTextNotas);
-        spinner_listaTelefonos.add(spinner_telefonos);
+            }
+        });
 
     }
+    private class addViewTelefono implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+
+            arrayListTelefonos.add(editTextTelefono.getText().toString());
+            arrayAdapter.notifyDataSetChanged();
+
+        }
+    }
+
+
 
     private class abrirGaleria implements View.OnClickListener {
 
@@ -193,18 +194,12 @@ public class Anadir extends AppCompatActivity {
             nuevoRegistroTelefono.put("TELEFONO", telefono.getTelefono());
             db.insert("TELEFONO", null, nuevoRegistroTelefono);
 
-            for(int i = 0; i < listaTelefonos.size(); i ++) {
 
-                Telefono telefono2 = new Telefono(maxid, spinner_listaTelefonos.get(i).getSelectedItem().toString(), listaTelefonos.get(i).getText().toString());
-                nuevoRegistroTelefono.put("ID", telefono2.getId());
-                nuevoRegistroTelefono.put("TIPO", telefono2.getTipo());
-                nuevoRegistroTelefono.put("TELEFONO", telefono2.getTelefono());
-                db.insert("TELEFONO", null, nuevoRegistroTelefono);
-            }
             try{
                 db.insert("CONTACTO", null, nuevoRegistroContacto);
                 db.insert("EMAIL", null, nuevoRegistroEmail);
                 db.insert("NOTAS", null, nuevoRegistroNotas);
+                db.insert("TELEFONO", null, nuevoRegistroTelefono);
                 mensajeNormalContacto();
 
             }catch (Exception e){
@@ -232,75 +227,6 @@ public class Anadir extends AppCompatActivity {
 
 
 
-
-
-    private class onAddFieldNotas implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-            if(listaNotas.size()<3) {
-                edittext_notas = new EditText(getApplicationContext());
-                edittext_notas.setId(listaNotas.size() + 1);
-
-                int indice = listaNotas.size();
-
-                for (int i = 0; i < listaNotas.size(); i++) {
-                    System.out.println("--------------Notas:" + listaNotas.get(i).getText().toString());
-                }
-
-                listaNotas.add(edittext_notas);
-                parentLinearLayout.addView(listaNotas.get(indice));
-            }else{
-
-                maxCamp();
-
-            }
-
-        }
-    }
-
-    private class onAddFieldTelefonos implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-            if(listaTelefonos.size()<3) {
-
-
-                int indice = listaTelefonos.size();
-                System.out.println("---"+ indice);
-
-                edittext_telefonos = new EditText(editTextTelefono.getContext());
-
-                edittext_telefonos.setId(listaTelefonos.size() + 1);
-                edittext_telefonos.setHint("Telefono " + (listaTelefonos.size()));
-
-                spinner_telefonos = new Spinner(getApplicationContext());
-                spinner_telefonos.setId(indice);
-                spinner_telefonos.setAdapter(adapterSpinner);
-
-
-                for (int i = 0; i < listaTelefonos.size(); i++) {
-                    System.out.println("--------------Tel:" + listaTelefonos.get(i).getText().toString());
-                }
-
-                listaTelefonos.add(edittext_telefonos);
-                spinner_listaTelefonos.add(spinner_telefonos);
-
-
-                parentLinearLayout.addView(listaTelefonos.get(indice));
-                parentLinearLayout.addView(spinner_listaTelefonos.get(indice));
-
-
-            }else{
-
-
-                maxCamp();
-
-
-            }
-
-        }
-    }
 
 
 
