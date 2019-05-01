@@ -38,6 +38,7 @@ import java.util.List;
 
 import static android.view.ViewGroup.*;
 import static com.example.contactos.R.id.editTextNotas;
+import static com.example.contactos.R.id.edit_query;
 
 public class Anadir extends AppCompatActivity {
 
@@ -66,8 +67,6 @@ public class Anadir extends AppCompatActivity {
     private LinearLayout parentLinearLayout;
     private EditText edittext_notas, edittext_telefonos;
     private Spinner spinner_telefonos;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +108,12 @@ public class Anadir extends AppCompatActivity {
         listaNotas = new ArrayList<>();
         listaTelefonos = new ArrayList<>();
         spinner_listaTelefonos = new ArrayList<>();
+
+
+
+        listaTelefonos.add(editTextNotas);
+        listaNotas.add(editTextNotas);
+        spinner_listaTelefonos.add(spinner_telefonos);
 
     }
 
@@ -233,17 +238,18 @@ public class Anadir extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            if(listaNotas.size()<2) {
+            if(listaNotas.size()<3) {
                 edittext_notas = new EditText(getApplicationContext());
                 edittext_notas.setId(listaNotas.size() + 1);
 
+                int indice = listaNotas.size();
 
                 for (int i = 0; i < listaNotas.size(); i++) {
                     System.out.println("--------------Notas:" + listaNotas.get(i).getText().toString());
                 }
 
                 listaNotas.add(edittext_notas);
-                parentLinearLayout.addView(edittext_notas, parentLinearLayout.getChildCount() - 1);
+                parentLinearLayout.addView(listaNotas.get(indice));
             }else{
 
                 maxCamp();
@@ -257,14 +263,19 @@ public class Anadir extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            if(listaTelefonos.size()<2) {
+            if(listaTelefonos.size()<3) {
 
-                edittext_telefonos = new EditText(getApplicationContext());
+
+                int indice = listaTelefonos.size();
+                System.out.println("---"+ indice);
+
+                edittext_telefonos = new EditText(editTextTelefono.getContext());
+
                 edittext_telefonos.setId(listaTelefonos.size() + 1);
+                edittext_telefonos.setHint("Telefono " + (listaTelefonos.size()));
 
                 spinner_telefonos = new Spinner(getApplicationContext());
-
-                spinner_telefonos.setId(listaTelefonos.size() + 1);
+                spinner_telefonos.setId(indice);
                 spinner_telefonos.setAdapter(adapterSpinner);
 
 
@@ -274,11 +285,17 @@ public class Anadir extends AppCompatActivity {
 
                 listaTelefonos.add(edittext_telefonos);
                 spinner_listaTelefonos.add(spinner_telefonos);
-                parentLinearLayout.addView(edittext_telefonos, parentLinearLayout.getChildCount() - 3);
-                parentLinearLayout.addView(spinner_telefonos, parentLinearLayout.getChildCount() - 4);
+
+
+                parentLinearLayout.addView(listaTelefonos.get(indice));
+                parentLinearLayout.addView(spinner_listaTelefonos.get(indice));
+
+
             }else{
 
+
                 maxCamp();
+
 
             }
 
