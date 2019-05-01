@@ -91,8 +91,10 @@ public class Anadir extends AppCompatActivity {
         buttonAddTelefono.setOnClickListener(new addViewTelefono());
 
         arrayListTelefonos = new ArrayList<>();
+
+
         list_telefono = (ListView) findViewById(R.id.list_telefono);
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListTelefonos);
+        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
         list_telefono.setAdapter(arrayAdapter);
 
         list_telefono.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
