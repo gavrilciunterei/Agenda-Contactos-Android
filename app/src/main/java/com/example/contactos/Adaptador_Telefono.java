@@ -1,4 +1,5 @@
 package com.example.contactos;
+
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -11,15 +12,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Adaptador_Home extends BaseAdapter {
+public class Adaptador_Telefono extends BaseAdapter {
 
     private Context context;
-    private List<Contacto> listaClientes;
+    private List<Telefono> listaClientes;
 
-    public Adaptador_Home(Context context, ArrayList<Contacto> listaClientes) {
+    public Adaptador_Telefono(Context context, ArrayList<Telefono> listaClientes) {
         this.context = context;
-        this.listaClientes= listaClientes;
+        this.listaClientes = listaClientes;
     }
 
     @Override
@@ -44,20 +44,18 @@ public class Adaptador_Home extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.lista_datos, parent, false);
+            rowView = inflater.inflate(R.layout.lista_telefono, parent, false);
         }
 
-        TextView nombre= (TextView) rowView.findViewById(R.id.item);
-        ImageView foto= (ImageView) rowView.findViewById(R.id.imageViewContacto);
+        TextView nombre = (TextView) rowView.findViewById(R.id.itemTelefono);
+        TextView nombre2 = (TextView) rowView.findViewById(R.id.subitemTelefono);
+
+        Telefono tel = this.listaClientes.get(position);
 
 
-        Contacto contacto = this.listaClientes.get(position);
-
-        nombre.setText(contacto.getNombre());
-        byte[] bytes = contacto.getImg();
-        foto.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+            nombre.setText(tel.getTelefono().toString());
+            nombre2.setText(tel.getTipo().toString());
 
         return rowView;
     }
-
 }

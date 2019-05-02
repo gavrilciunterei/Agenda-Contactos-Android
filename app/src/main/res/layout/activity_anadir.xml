@@ -14,15 +14,19 @@
             android:id="@+id/linear_anadir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical">
-
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginRight="8dp"
+                >
 
                 <ImageView
                     android:id="@+id/imageViewimg"
@@ -55,7 +59,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginRight="8dp">
 
                 <EditText
                     android:id="@+id/editTextNombre"
@@ -86,7 +91,8 @@
                 android:id="@+id/linear_telefono_repeat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginRight="8dp">
 
 
                 <Spinner
@@ -115,13 +121,17 @@
             <ListView
                 android:id="@+id/list_telefono"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp">
+
+            </ListView>
 
             <LinearLayout
                 android:id="@+id/linear_email_repeat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginRight="8dp">
 
                 <EditText
                     android:id="@+id/editTextCorreo"
@@ -140,11 +150,18 @@
                     android:background="@android:drawable/ic_input_add" />
             </LinearLayout>
 
+            <ListView
+                android:id="@+id/list_correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"/>
+
             <LinearLayout
                 android:id="@+id/linear_notas_repeat"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginRight="8dp">
 
                 <EditText
                     android:id="@+id/editTextNotas"
@@ -163,17 +180,23 @@
                     android:background="@android:drawable/ic_input_add" />
             </LinearLayout>
 
+            <ListView
+                android:id="@+id/list_notas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp">
+
+            </ListView>
+
+            <include layout="@layout/diseno_direccion" />
+
             <Button
                 android:id="@+id/buttonAnadir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/anadirContacto" />
+                android:text="@string/anadirContacto"
+                android:layout_marginRight="8dp"/>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

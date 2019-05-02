@@ -9,6 +9,6 @@
     <string name="telefono">Telefono</string>
     <string name="correo">Correo</string>
     <string name="notas">Notas</string>
-    <string name="anadirContacto">Añadir</string>
+    <string name="anadirContacto">Guardar</string>
 
 </resources>
