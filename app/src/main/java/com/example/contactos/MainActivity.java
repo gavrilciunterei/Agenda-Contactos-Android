@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -36,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         this.listView = (ListView) findViewById(R.id.lsvContactos);
         this.listView.setAdapter(new Adaptador_Home(this, getContacto()));
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String idd = Integer.toString(getContacto().get(position).getId());
+                abrirNuevaVentana("ID",  idd);
+
+            }
+        });
+
 
     }
 
@@ -52,10 +63,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            Intent intent = new Intent(MainActivity.this, Anadir.class);
-            startActivity(intent);
+            abrirNuevaVentana("nada", "nada");
 
         }
+    }
+
+    private void abrirNuevaVentana(String cadena, String id){
+
+        Intent i = new Intent(MainActivity.this, Anadir.class );
+        if(cadena.equals("ID")) {
+            i.putExtra("ID", id);
+        }
+        startActivity(i);
     }
 
 

@@ -4,14 +4,14 @@ public class Direccion {
 
     private int id;
     private String calle;
-    private int numero;
-    private int piso;
-    private char puerta;
+    private String numero;
+    private String piso;
+    private String puerta;
     private String codigoPostal;
     private String ciudad;
     private String provincia;
 
-    public Direccion(int id, String calle, int numero, int piso, char puerta, String codigoPostal, String ciudad, String provincia) {
+    public Direccion(int id, String calle, String numero, String piso, String puerta, String codigoPostal, String ciudad, String provincia) {
         this.id = id;
         this.calle = calle;
         this.numero = numero;
@@ -38,27 +38,27 @@ public class Direccion {
         this.calle = calle;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
-    public int getPiso() {
+    public String getPiso() {
         return piso;
     }
 
-    public void setPiso(int piso) {
+    public void setPiso(String piso) {
         this.piso = piso;
     }
 
-    public char getPuerta() {
+    public String getPuerta() {
         return puerta;
     }
 
-    public void setPuerta(char puerta) {
+    public void setPuerta(String puerta) {
         this.puerta = puerta;
     }
 
@@ -86,3 +86,4 @@ public class Direccion {
         this.provincia = provincia;
     }
 }
+

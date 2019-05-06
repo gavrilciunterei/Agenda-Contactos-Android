@@ -5,4 +5,76 @@
     android:orientation="vertical">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextCalle"
+            android:layout_width="239dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Calle"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextPiso"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Piso"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextNumero"
+            android:layout_width="113dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Numero"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextPuerta"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Puerta"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextCodigo"
+            android:layout_width="237dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Codigo"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ciudad"
+            android:inputType="textPersonName" />
+
+        <Spinner
+            android:id="@+id/spinnerProvincia"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 </LinearLayout>

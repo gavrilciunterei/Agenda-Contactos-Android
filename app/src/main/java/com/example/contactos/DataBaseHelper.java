@@ -26,12 +26,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String sqlCreateDireccion  = "CREATE TABLE IF NOT EXISTS DIRECCION(" +
                 "ID INTEGER," +
                 "CALLE VARCHAR," +
-                "NUMERO INTEGER," +
-                "PISO INTEGER," +
-                "PUERTA CHAR," +
+                "NUMERO VARCHAR," +
+                "PISO VARCHAR," +
+                "PUERTA VARCHAR," +
                 "CODIGO VARCHAR," +
                 "CIUDAD VARCHAR," +
-                "PROCINVIA VARCHAR" +
+                "PROVINCIA VARCHAR" +
                 ")";
         String sqlCreateEmail = "CREATE TABLE IF NOT EXISTS EMAIL(" +
                 "ID INTEGER," +

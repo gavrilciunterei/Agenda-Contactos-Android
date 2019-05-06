@@ -53,7 +53,7 @@ public class Adaptador_Home extends BaseAdapter {
 
         Contacto contacto = this.listaClientes.get(position);
 
-        nombre.setText(contacto.getNombre());
+        nombre.setText(contacto.getNombre().toLowerCase());
         byte[] bytes = contacto.getImg();
         foto.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 

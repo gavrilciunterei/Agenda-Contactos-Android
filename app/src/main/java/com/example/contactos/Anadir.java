@@ -3,10 +3,12 @@ package com.example.contactos;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +16,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,6 +34,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +47,12 @@ public class Anadir extends AppCompatActivity {
 
 
     private EditText editTextNombre, editTextApodo, editTextEmpresa, editTextTelefono, editTextEmail, editTextNotas;
+    private EditText editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
     private Button buttonAnadir, buttonAbrirGaleria;
     private ImageView imageViewimg;
-    private Spinner spinnerTipo;
+    private Spinner spinnerTipo, spinnerProvincia;
     private long backPressedTime;
-    private ArrayAdapter<String> adapterSpinner;
+    private ArrayAdapter<String> adapterSpinner, adapterSpinnerPronvincia;
 
 
 
@@ -72,7 +78,7 @@ public class Anadir extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
-
+    private boolean devolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +97,13 @@ public class Anadir extends AppCompatActivity {
         editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
         editTextEmail = (EditText) findViewById(R.id.editTextCorreo);
         editTextNotas = (EditText) findViewById(R.id.editTextNotas);
+        editTextCalle = (EditText) findViewById(R.id.editTextCalle);
+        editTextPiso = (EditText) findViewById(R.id.editTextPiso);
+        editTextNumero = (EditText) findViewById(R.id.editTextNumero);
+        editTextPuerta = (EditText) findViewById(R.id.editTextPuerta);
+        editTextCodigo = (EditText) findViewById(R.id.editTextCodigo);
+        editTextCiudad = (EditText) findViewById(R.id.editTextCiudad);
+
 
         imageViewimg = (ImageView) findViewById(R.id.imageViewimg);
         buttonAbrirGaleria = (Button) findViewById(R.id.buttonAbrirGaleria);
@@ -103,7 +116,10 @@ public class Anadir extends AppCompatActivity {
         adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
         spinnerTipo.setAdapter(adapterSpinner);
 
-
+        Provincias provincias = new Provincias();
+        spinnerProvincia = (Spinner) findViewById(R.id.spinnerProvincia);
+        adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, provincias.getProvincias());
+        spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
 
         //Anadir telefonos a un listView y borrar manteniendo pulsado
@@ -137,6 +153,7 @@ public class Anadir extends AppCompatActivity {
         list_correo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
                 arrayAdapterCorreo.remove(arrayListCorreo.get(position));
                 arrayAdapterCorreo.notifyDataSetChanged();
                 return true;
@@ -164,6 +181,25 @@ public class Anadir extends AppCompatActivity {
         });
 
 
+        //Apartado edicion
+        Bundle bundle=getIntent().getExtras();
+
+        if(bundle != null) {
+            String dato1 = bundle.getString("ID");
+            llenarCamposEditar(dato1);
+        }
+
+
+
+    }
+
+    private void llenarCamposEditar(String id){
+        Contacto con = getContactoWithID(id);
+        editTextNombre.setText(con.getNombre());
+        editTextApodo.setText(con.getNombre());
+        editTextEmpresa.setText(con.getEmpresa());
+        byte[] bytes = con.getImg();
+        imageViewimg.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 
     }
     private class addViewTelefono implements View.OnClickListener {
@@ -299,6 +335,23 @@ public class Anadir extends AppCompatActivity {
                 db.insert("TELEFONO", null, nuevoRegistroTelefono);
             }
 
+
+            ContentValues nuevoRegistroDireccion = new ContentValues();
+            Direccion direccion = new Direccion(maxid, editTextCalle.getText().toString(), editTextNumero.getText().toString(),
+                    editTextPiso.getText().toString(), editTextPuerta.getText().toString(), editTextCodigo.getText().toString(),
+                    editTextCiudad.getText().toString(), spinnerProvincia.getSelectedItem().toString());
+
+
+            nuevoRegistroDireccion.put("ID", direccion.getId());
+            nuevoRegistroDireccion.put("CALLE", direccion.getCalle());
+            nuevoRegistroDireccion.put("NUMERO", direccion.getNumero());
+            nuevoRegistroDireccion.put("PISO", direccion.getPiso());
+            nuevoRegistroDireccion.put("PUERTA", direccion.getPuerta());
+            nuevoRegistroDireccion.put("CODIGO", direccion.getCodigoPostal());
+            nuevoRegistroDireccion.put("CIUDAD", direccion.getCiudad());
+            nuevoRegistroDireccion.put("PROVINCIA", direccion.getProvincia());
+            db.insert("DIRECCION", null, nuevoRegistroDireccion);
+
             mensajeNormalContacto();
 
 
@@ -365,6 +418,32 @@ public class Anadir extends AppCompatActivity {
     public void maxCamp() {
 
             Toast.makeText(this, "Solo se pueden añadir 3 campos", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+   public Contacto getContactoWithID(String id) {
+
+        String sql = "SELECT * FROM CONTACTO WHERE ID = ?";
+        Contacto con = null;
+        try {
+            String[] argss = new String[]{id};
+
+            db = usdbh.getReadableDatabase();
+
+            Cursor c = db.rawQuery(sql, argss);
+            if (c.moveToFirst()) {
+                do {
+                    con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
+                } while (c.moveToNext());
+            }
+
+
+        }catch(Exception e){
+            System.out.println(e.toString());
+
+        }
+        return con;
 
     }
 
