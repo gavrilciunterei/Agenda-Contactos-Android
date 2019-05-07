@@ -187,10 +187,10 @@ public class DataBaseExecute {
         ArrayList<Contacto> contacto = new ArrayList<>();
 
 
-        String sql = "SELECT * FROM CONTACTO WHERE NOMBRE LIKE ?  ORDER BY NOMBRE ASC";
-         db = usdbh.getReadableDatabase();
-        String[] argss = new String[]{name};
-       Cursor c = db.rawQuery(sql, argss);
+
+
+        db = usdbh.getReadableDatabase();
+        Cursor c = db.query("CONTACTO", new String[] {"*"},"NOMBRE"+" LIKE '%"+name+"%'", null, null, null, null);
 
         while (c.moveToNext()){
             Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));

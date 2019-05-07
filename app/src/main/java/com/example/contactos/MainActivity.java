@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         contacto = dbe.getContacto();
         adaptador_home = new Adaptador_Home(this, contacto);
         this.listView.setAdapter(adaptador_home);
-        listView.setTextFilterEnabled(true);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
