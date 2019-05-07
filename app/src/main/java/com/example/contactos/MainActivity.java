@@ -23,7 +23,7 @@ import android.widget.SearchView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity {
 
 
     private Button buttonAnadir;
@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private EditText editTextBuscarContacto;
     private Adaptador_Home adaptador_home;
     private SearchView searchView;
-    private ArrayList<Contacto> contacto;
+    private String mQuery;
 
+    private ArrayList<Contacto> contacto;
 
 
     @Override
@@ -50,21 +51,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         this.listView = (ListView) findViewById(R.id.lsvContactos);
-        adaptador_home = new Adaptador_Home(this, dbe.getContacto());
+        contacto = dbe.getContacto();
+        adaptador_home = new Adaptador_Home(this, contacto);
         this.listView.setAdapter(adaptador_home);
         listView.setTextFilterEnabled(true);
-        contacto = dbe.getContacto();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("--------"+ position);
 
                 String idd = Integer.toString(contacto.get(position).getId());
 
-
                 Intent i = new Intent(MainActivity.this, Ver.class );
-                    i.putExtra("ID", idd);
+                i.putExtra("ID", idd);
 
                 startActivity(i);
 
@@ -72,41 +71,55 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
 
         searchView =(SearchView) findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                contacto = dbe.getContactoByName(query);
+                listView.setAdapter(new Adaptador_Home(MainActivity.this, contacto));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(TextUtils.isEmpty(newText)){
+                    contacto = dbe.getContacto();
+                    listView.setAdapter(new Adaptador_Home(MainActivity.this, contacto));
+                }else {
+                    contacto = dbe.getContactoByName(newText);
+                    listView.setAdapter(new Adaptador_Home(MainActivity.this, contacto));
+                }
+                return false;
+            }
+        });
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setQuery(mQuery, false);
+            }
+        });
 
         setupSearchView();
 
+
     }
+
+
+
     private void setupSearchView()
     {
         searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(this);
         searchView.setSubmitButtonEnabled(true);
         searchView.setQueryHint("Buscar...");
     }
 
-
-    public boolean onQueryTextChange(String newText)
-    {
-
-        if (TextUtils.isEmpty(newText)) {
-            listView.clearTextFilter();
-        } else {
-            listView.setFilterText(newText);
-        }
-        return true;
-    }
-
-    public boolean onQueryTextSubmit(String query)
-    {
-        return false;
-    }
 
 
     @Override
     public void onRestart() {
 
         super.onRestart();
-        this.listView.setAdapter(new Adaptador_Home(this, dbe.getContacto()));
+        contacto = dbe.getContacto();
+        this.listView.setAdapter(new Adaptador_Home(this, contacto));
     }
 
 

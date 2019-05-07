@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 
@@ -182,12 +183,14 @@ public class DataBaseExecute {
 
 
 
-    public ArrayList<Contacto> getContacto() {
+    public ArrayList<Contacto> getContactoByName(String name) {
         ArrayList<Contacto> contacto = new ArrayList<>();
 
-        String sql = "SELECT * FROM CONTACTO ORDER BY NOMBRE ASC";
-        SQLiteDatabase db = usdbh.getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
+
+        String sql = "SELECT * FROM CONTACTO WHERE NOMBRE LIKE ?  ORDER BY NOMBRE ASC";
+         db = usdbh.getReadableDatabase();
+        String[] argss = new String[]{name};
+       Cursor c = db.rawQuery(sql, argss);
 
         while (c.moveToNext()){
             Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
@@ -197,6 +200,20 @@ public class DataBaseExecute {
         return contacto;
     }
 
+    public ArrayList<Contacto> getContacto() {
+        ArrayList<Contacto> contacto = new ArrayList<>();
+
+        String sql = "SELECT * FROM CONTACTO ORDER BY NOMBRE ASC";
+        db = usdbh.getReadableDatabase();
+        Cursor c = db.rawQuery(sql, null);
+
+        while (c.moveToNext()){
+            Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
+            contacto.add(con);
+        }
+
+        return contacto;
+    }
 
 
 
