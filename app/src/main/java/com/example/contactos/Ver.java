@@ -1,5 +1,6 @@
 package com.example.contactos;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ import java.util.List;
 public class Ver extends AppCompatActivity {
 
     private DataBaseExecute dbe;
-
+    private String id;
 
     private EditText editTextNombre2, editTextApodo2, editTextEmpresa2;
     private EditText editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
@@ -28,21 +29,19 @@ public class Ver extends AppCompatActivity {
     private ArrayAdapter<String> adapterSpinner, adapterSpinnerPronvincia;
 
 
+    private Button buttonEditar;
 
     //listviews dinamicos telefonos
-    private ArrayList<Telefono> arrayListTelefonos;
     private ListView list_telefono;
     private Adaptador_Telefono at;
 
 
     //listviw correo
-    private ArrayList<String> arrayListCorreo;
     private ListView list_correo;
     private ArrayAdapter<String> arrayAdapterCorreo;
 
 
     //listviw notas
-    private ArrayList<String> arrayListNotas;
     private ListView list_Notas;
     private ArrayAdapter<String> arrayAdapterNotas;
 
@@ -52,8 +51,6 @@ public class Ver extends AppCompatActivity {
         setContentView(R.layout.activity_ver);
         getSupportActionBar().hide();
         dbe = new DataBaseExecute(this);
-
-
 
         editTextNombre2 = (EditText) findViewById(R.id.editTextNombre2);
         editTextNombre2.setEnabled(false);
@@ -80,23 +77,21 @@ public class Ver extends AppCompatActivity {
 
 
 
-        arrayListTelefonos = new ArrayList<>();
         list_telefono = (ListView) findViewById(R.id.list_telefono2);
-        at = new Adaptador_Telefono(this, arrayListTelefonos);
-        list_telefono.setAdapter(at);
+        list_telefono.setEnabled(false);
 
 
-        arrayListCorreo = new ArrayList<>();
+
         list_correo = (ListView) findViewById(R.id.list_correo2);
-        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListCorreo);
-        list_correo.setAdapter(arrayAdapterCorreo);
+        list_correo.setEnabled(false);
 
 
-        arrayListNotas= new ArrayList<>();
+
         list_Notas = (ListView) findViewById(R.id.list_notas2);
-        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListNotas);
-        list_Notas.setAdapter(arrayAdapterNotas);
+        list_Notas.setEnabled(false);
 
+        buttonEditar = (Button) findViewById(R.id.buttonEditar);
+        buttonEditar.setOnClickListener(new openEditarMode());
 
 
         //Apartado edicion
@@ -104,16 +99,15 @@ public class Ver extends AppCompatActivity {
 
         if(bundle != null) {
             String dato1 = bundle.getString("ID");
-            llenarCamposEditar(dato1);
+            id = dato1;
+            llenarCamposEditar();
         }
-
-
 
 
     }
 
 
-    private void llenarCamposEditar(String id){
+    private void llenarCamposEditar(){
 
         Contacto con = dbe.getContactoWithID(id);
         editTextNombre2.setText(con.getNombre());
@@ -134,6 +128,30 @@ public class Ver extends AppCompatActivity {
         adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
         spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
+        at = new Adaptador_Telefono(this, dbe.getTelefonoWithID(id));
+        list_telefono.setAdapter(at);
+
+        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getCorreoWithID(id));
+        list_correo.setAdapter(arrayAdapterCorreo);
+
+        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getNotasWithID(id));
+        list_Notas.setAdapter(arrayAdapterNotas);
+    }
+
+
+
+    private class openEditarMode implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            Intent i = new Intent(Ver.this, Anadir.class );
+            i.putExtra("ID", id);
+            startActivity(i);
+
+
+
+        }
     }
 
 }

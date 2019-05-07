@@ -52,6 +52,7 @@ public class Anadir extends AppCompatActivity {
     private Spinner spinnerTipo, spinnerProvincia;
     private long backPressedTime;
     private ArrayAdapter<String> adapterSpinner, adapterSpinnerPronvincia;
+    private boolean editar = false;
 
 
 
@@ -86,7 +87,6 @@ public class Anadir extends AppCompatActivity {
 
         dbe = new DataBaseExecute(this);
 
-
         editTextNombre = (EditText) findViewById(R.id.editTextNombre);
         editTextApodo = (EditText) findViewById(R.id.editTextApodo);
         editTextEmpresa = (EditText) findViewById(R.id.editTextEmpresa);
@@ -105,8 +105,7 @@ public class Anadir extends AppCompatActivity {
         buttonAbrirGaleria = (Button) findViewById(R.id.buttonAbrirGaleria);
         buttonAbrirGaleria.setOnClickListener(new abrirGaleria());
 
-        buttonAnadir = (Button) findViewById(R.id.buttonAnadir);
-        buttonAnadir.setOnClickListener(new anadirContacto());
+
 
         spinnerTipo = (Spinner) findViewById(R.id.spinnerTipo);
         adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
@@ -183,7 +182,16 @@ public class Anadir extends AppCompatActivity {
         if(bundle != null) {
             String dato1 = bundle.getString("ID");
             llenarCamposEditar(dato1);
+            editar = true;
         }
+
+
+        buttonAnadir = (Button) findViewById(R.id.buttonAnadir);
+        if(editar) {
+            buttonAnadir.setOnClickListener(new editarContacto());
+        }else{
+            buttonAnadir.setOnClickListener(new anadirContacto());
+    }
 
 
 
@@ -357,8 +365,15 @@ public class Anadir extends AppCompatActivity {
         }
     }
 
+    private class editarContacto implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
 
 
+
+        }
+    }
 
     public void mensajeNormalContacto()
     {

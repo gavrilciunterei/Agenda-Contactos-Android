@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,15 +14,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Adaptador_Home extends BaseAdapter {
+public class Adaptador_Home extends BaseAdapter implements Filterable {
 
     private Context context;
     private List<Contacto> listaClientes;
+    private List<Contacto> orig;
 
     public Adaptador_Home(Context context, ArrayList<Contacto> listaClientes) {
         this.context = context;
         this.listaClientes= listaClientes;
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final ArrayList<Contacto> results = new ArrayList<Contacto>();
+                if (orig == null)
+                    orig = listaClientes;
+                if (constraint != null) {
+                    if (orig != null && orig.size() > 0) {
+                        for (final Contacto g : orig) {
+                            if (g.getNombre().toLowerCase()
+                                    .contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                listaClientes = (ArrayList<Contacto>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+
+    }
+
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
 
     @Override
     public int getCount() {
@@ -59,5 +100,6 @@ public class Adaptador_Home extends BaseAdapter {
 
         return rowView;
     }
+
 
 }

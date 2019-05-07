@@ -97,7 +97,82 @@ public class DataBaseExecute {
     }
 
 
+    public ArrayList<Telefono> getTelefonoWithID(String id) {
+        ArrayList<Telefono> telefonos = new ArrayList<>();
+        Telefono telefono = null;
 
+        String sql = "SELECT * FROM TELEFONO WHERE ID = ?";
+        try {
+            String[] argss = new String[]{id};
+
+            db = usdbh.getReadableDatabase();
+
+            Cursor c = db.rawQuery(sql, argss);
+            if (c.moveToFirst()) {
+                do {
+                    telefono = new Telefono(c.getInt(0),c.getString(1), c.getString(2));
+                    telefonos.add(telefono);
+                } while (c.moveToNext());
+            }
+
+
+        }catch(Exception e){
+            System.out.println(e.toString());
+
+        }
+        return telefonos;
+
+    }
+
+    public ArrayList<String> getCorreoWithID(String id) {
+        ArrayList<String> emails = new ArrayList<>();
+
+        String sql = "SELECT * FROM EMAIL WHERE ID = ?";
+        try {
+            String[] argss = new String[]{id};
+
+            db = usdbh.getReadableDatabase();
+
+            Cursor c = db.rawQuery(sql, argss);
+            if (c.moveToFirst()) {
+                do {
+                    emails.add(c.getString(1));
+                } while (c.moveToNext());
+            }
+
+
+        }catch(Exception e){
+            System.out.println(e.toString());
+
+        }
+        return emails;
+
+    }
+
+    public ArrayList<String> getNotasWithID(String id) {
+        ArrayList<String> notas = new ArrayList<>();
+
+        String sql = "SELECT * FROM NOTAS WHERE ID = ?";
+        try {
+            String[] argss = new String[]{id};
+
+            db = usdbh.getReadableDatabase();
+
+            Cursor c = db.rawQuery(sql, argss);
+            if (c.moveToFirst()) {
+                do {
+                    notas.add(c.getString(1));
+                } while (c.moveToNext());
+            }
+
+
+        }catch(Exception e){
+            System.out.println(e.toString());
+
+        }
+        return notas;
+
+    }
 
     public void close(){
 
