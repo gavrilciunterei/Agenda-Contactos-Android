@@ -6,9 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
+    private static final int VERSION = 1;
+    private static final String DATABASE_NAME = "DBcontactos.db";
 
-    public DataBaseHelper(Context contexto, String nombre, SQLiteDatabase.CursorFactory factory, int version) {
-        super(contexto, nombre, factory, version);
+    public DataBaseHelper(Context contexto) {
+        super(contexto, DATABASE_NAME, null, VERSION);
     }
 
 

@@ -41,9 +41,8 @@ import java.util.List;
 
 public class Anadir extends AppCompatActivity {
 
-    private SQLiteDatabase db=null;
-    private DataBaseHelper usdbh;
     private final String []opciones={"FIJO","MOVIL"};
+    private DataBaseExecute dbe;
 
 
     private EditText editTextNombre, editTextApodo, editTextEmpresa, editTextTelefono, editTextEmail, editTextNotas;
@@ -78,17 +77,14 @@ public class Anadir extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
-    private boolean devolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anadir);
-        checkPermission();
         getSupportActionBar().hide();
 
-
-        usdbh = new DataBaseHelper(this, "DBcontactos", null, 1);
+        dbe = new DataBaseExecute(this);
 
 
         editTextNombre = (EditText) findViewById(R.id.editTextNombre);
@@ -194,7 +190,7 @@ public class Anadir extends AppCompatActivity {
     }
 
     private void llenarCamposEditar(String id){
-        Contacto con = getContactoWithID(id);
+        Contacto con = dbe.getContactoWithID(id);
         editTextNombre.setText(con.getNombre());
         editTextApodo.setText(con.getNombre());
         editTextEmpresa.setText(con.getEmpresa());
@@ -202,6 +198,7 @@ public class Anadir extends AppCompatActivity {
         imageViewimg.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 
     }
+
     private class addViewTelefono implements View.OnClickListener {
 
         @Override
@@ -287,9 +284,8 @@ public class Anadir extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            db= usdbh.getWritableDatabase();
 
-            int maxid = getLastId();
+            int maxid = dbe.getLastId();
 
 
             BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
@@ -306,7 +302,8 @@ public class Anadir extends AppCompatActivity {
             nuevoRegistroContacto.put("APODO", contacto.getApodo());
             nuevoRegistroContacto.put("EMPRESA", contacto.getEmpresa());
             nuevoRegistroContacto.put("IMG", contacto.getImg());
-            db.insert("CONTACTO", null, nuevoRegistroContacto);
+            dbe.anadirContacto(nuevoRegistroContacto, "CONTACTO");
+
 
 
 
@@ -315,7 +312,7 @@ public class Anadir extends AppCompatActivity {
                 ContentValues nuevoRegistroEmail = new ContentValues();
                 nuevoRegistroEmail.put("ID", maxid);
                 nuevoRegistroEmail.put("EMAIL", arrayListCorreo.get(i).toString());
-                db.insert("EMAIL", null, nuevoRegistroEmail);
+                dbe.anadirContacto(nuevoRegistroEmail, "EMAIL");
 
             }
 
@@ -323,7 +320,7 @@ public class Anadir extends AppCompatActivity {
                 ContentValues nuevoRegistroNotas = new ContentValues();
                 nuevoRegistroNotas.put("ID", maxid);
                 nuevoRegistroNotas.put("NOTA", arrayListNotas.get(i).toString());
-                db.insert("NOTAS", null, nuevoRegistroNotas);
+                dbe.anadirContacto(nuevoRegistroNotas, "NOTAS");
             }
 
             for(int i = 0; i < arrayListTelefonos.size(); i++) {
@@ -332,7 +329,8 @@ public class Anadir extends AppCompatActivity {
                 nuevoRegistroTelefono.put("ID", maxid);
                 nuevoRegistroTelefono.put("TIPO", arrayListTelefonos.get(i).getTipo());
                 nuevoRegistroTelefono.put("TELEFONO", arrayListTelefonos.get(i).getTelefono());
-                db.insert("TELEFONO", null, nuevoRegistroTelefono);
+
+                dbe.anadirContacto(nuevoRegistroTelefono, "TELEFONO");
             }
 
 
@@ -350,7 +348,8 @@ public class Anadir extends AppCompatActivity {
             nuevoRegistroDireccion.put("CODIGO", direccion.getCodigoPostal());
             nuevoRegistroDireccion.put("CIUDAD", direccion.getCiudad());
             nuevoRegistroDireccion.put("PROVINCIA", direccion.getProvincia());
-            db.insert("DIRECCION", null, nuevoRegistroDireccion);
+            dbe.anadirContacto(nuevoRegistroDireccion, "DIRECCION");
+
 
             mensajeNormalContacto();
 
@@ -360,41 +359,6 @@ public class Anadir extends AppCompatActivity {
 
 
 
-
-    public int getLastId() {
-
-        String sql = "SELECT MAX(ID) FROM CONTACTO";
-        db = usdbh.getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
-
-        if (c.moveToFirst()) {
-            return c.getInt(0)+1;
-        }
-        return 0;
-    }
-
-
-
-
-
-
-    private void checkPermission() {
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-            } else {
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        1);
-            }
-        }
-    }
 
     public void mensajeNormalContacto()
     {
@@ -421,31 +385,6 @@ public class Anadir extends AppCompatActivity {
 
     }
 
-
-   public Contacto getContactoWithID(String id) {
-
-        String sql = "SELECT * FROM CONTACTO WHERE ID = ?";
-        Contacto con = null;
-        try {
-            String[] argss = new String[]{id};
-
-            db = usdbh.getReadableDatabase();
-
-            Cursor c = db.rawQuery(sql, argss);
-            if (c.moveToFirst()) {
-                do {
-                    con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
-                } while (c.moveToNext());
-            }
-
-
-        }catch(Exception e){
-            System.out.println(e.toString());
-
-        }
-        return con;
-
-    }
 
 
 }

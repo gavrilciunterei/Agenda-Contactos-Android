@@ -1,8 +1,13 @@
 package com.example.contactos;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +19,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SQLiteDatabase db=null;
-    private DataBaseHelper usdbh;
+
     private Button buttonAnadir;
     private ListView listView;
+    private DataBaseExecute dbe;
 
 
     @Override
@@ -25,36 +30,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        checkPermission();
+
+        dbe = new DataBaseExecute(this);
 
         buttonAnadir = (Button)findViewById(R.id.buttonAnadir);
         buttonAnadir.setOnClickListener(new newAnadir());
 
 
-        usdbh = new DataBaseHelper(this, "DBcontactos", null, 1);
-        SQLiteDatabase db= usdbh.getWritableDatabase();
-
-
         this.listView = (ListView) findViewById(R.id.lsvContactos);
-        this.listView.setAdapter(new Adaptador_Home(this, getContacto()));
+        this.listView.setAdapter(new Adaptador_Home(this, dbe.getContacto()));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String idd = Integer.toString(getContacto().get(position).getId());
-                abrirNuevaVentana("ID",  idd);
+                String idd = Integer.toString(dbe.getContacto().get(position).getId());
+
+                Intent i = new Intent(MainActivity.this, Ver.class );
+                    i.putExtra("ID", idd);
+
+                startActivity(i);
 
             }
         });
-
 
     }
 
 
     @Override
     public void onRestart() {
+
         super.onRestart();
-        this.listView.setAdapter(new Adaptador_Home(this, getContacto()));
+        this.listView.setAdapter(new Adaptador_Home(this, dbe.getContacto()));
     }
 
 
@@ -63,34 +71,29 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            abrirNuevaVentana("nada", "nada");
+            Intent i = new Intent(MainActivity.this, Anadir.class );
+            startActivity(i);
 
         }
     }
 
-    private void abrirNuevaVentana(String cadena, String id){
+    private void checkPermission() {
 
-        Intent i = new Intent(MainActivity.this, Anadir.class );
-        if(cadena.equals("ID")) {
-            i.putExtra("ID", id);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }
         }
-        startActivity(i);
     }
 
-
-    public ArrayList<Contacto> getContacto() {
-        ArrayList<Contacto> contacto = new ArrayList<>();
-
-        String sql = "SELECT * FROM CONTACTO ORDER BY NOMBRE ASC";
-        SQLiteDatabase db = usdbh.getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
-
-        while (c.moveToNext()){
-            Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
-            contacto.add(con);
-        }
-
-        return contacto;
-    }
 
 }
