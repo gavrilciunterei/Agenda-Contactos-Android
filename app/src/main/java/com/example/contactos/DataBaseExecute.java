@@ -29,6 +29,15 @@ public class DataBaseExecute {
         return false;
     }
 
+    public boolean editarContacto(ContentValues nuevoRegistro, String tabla, int id) {
+
+        db= usdbh.getWritableDatabase();
+
+   //     db.update(tabla, valores, "ID=?", id);
+
+        return false;
+    }
+
     public int getLastId() {
 
         String sql = "SELECT MAX(ID) FROM CONTACTO";
@@ -190,7 +199,7 @@ public class DataBaseExecute {
 
 
         db = usdbh.getReadableDatabase();
-        Cursor c = db.query("CONTACTO", new String[] {"*"},"NOMBRE"+" LIKE '%"+name+"%'", null, null, null, null);
+        Cursor c = db.query("CONTACTO", new String[] {"*"},"NOMBRE"+" LIKE '"+name+"%'", null, null, null, null);
 
         while (c.moveToNext()){
             Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
@@ -214,7 +223,6 @@ public class DataBaseExecute {
 
         return contacto;
     }
-
 
 
 }

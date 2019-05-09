@@ -79,6 +79,8 @@ public class Anadir extends AppCompatActivity {
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
 
+    private String idEditar = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,9 +184,9 @@ public class Anadir extends AppCompatActivity {
         if(bundle != null) {
             String dato1 = bundle.getString("ID");
             llenarCamposEditar(dato1);
+            idEditar = dato1;
             editar = true;
         }
-
 
         buttonAnadir = (Button) findViewById(R.id.buttonAnadir);
         if(editar) {
@@ -198,12 +200,34 @@ public class Anadir extends AppCompatActivity {
     }
 
     private void llenarCamposEditar(String id){
+
         Contacto con = dbe.getContactoWithID(id);
         editTextNombre.setText(con.getNombre());
         editTextApodo.setText(con.getNombre());
         editTextEmpresa.setText(con.getEmpresa());
         byte[] bytes = con.getImg();
         imageViewimg.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+        Direccion dir = dbe.getDireccionWithID(id);
+        editTextCiudad.setText(dir.getCiudad());
+        editTextCalle.setText(dir.getCalle());
+        editTextCodigo.setText(dir.getCodigoPostal());
+        editTextPiso.setText(dir.getPiso());
+        editTextPuerta.setText(dir.getPuerta());
+        editTextNumero.setText(dir.getNumero());
+
+        List<String> list = new ArrayList<String>();
+        list.add(dir.getProvincia());
+        adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
+        spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
+
+        at = new Adaptador_Telefono(this, dbe.getTelefonoWithID(id));
+        list_telefono.setAdapter(at);
+
+        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getCorreoWithID(id));
+        list_correo.setAdapter(arrayAdapterCorreo);
+
+        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getNotasWithID(id));
+        list_Notas.setAdapter(arrayAdapterNotas);
 
     }
 
@@ -295,7 +319,6 @@ public class Anadir extends AppCompatActivity {
 
             int maxid = dbe.getLastId();
 
-
             BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
             bmp = drawable.getBitmap();
 
@@ -369,6 +392,9 @@ public class Anadir extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+
+
+
 
 
 
