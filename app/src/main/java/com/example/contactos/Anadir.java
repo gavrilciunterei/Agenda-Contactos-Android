@@ -472,6 +472,7 @@ public class Anadir extends AppCompatActivity {
                 }
 
             }
+
             if(!arrayListCorreo.equals(emailsV)){
 
                 dbe.borrarPorID(idEdit, "EMAIL");
