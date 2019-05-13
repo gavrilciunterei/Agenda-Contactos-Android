@@ -1,8 +1,10 @@
 package com.example.contactos;
 
+import java.io.Serializable;
 import java.sql.Blob;
+import java.util.Arrays;
 
-public class Contacto {
+public class Contacto implements Serializable, Comparable<Contacto> {
 
     private int id;
     private String nombre;
@@ -56,5 +58,31 @@ public class Contacto {
 
     public void setImg(byte[] img) {
         this.img = img;
+    }
+
+
+    @Override
+    public int compareTo(Contacto o) {
+
+        int comparacion = nombre.compareTo(o.nombre);
+        if (comparacion == 0) {
+            comparacion = apodo.compareTo(o.apodo);
+
+        }
+        if (comparacion == 0) {
+            comparacion = empresa.compareTo(o.empresa);
+
+        }
+        if (comparacion == 0) {
+           boolean imagen = Arrays.equals(img, o.img);
+           if(imagen){
+               comparacion = 0;
+           }else{
+               comparacion = 1;
+           }
+        }
+
+        return comparacion;
+
     }
 }

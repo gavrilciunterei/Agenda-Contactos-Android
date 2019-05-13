@@ -1,6 +1,8 @@
 package com.example.contactos;
 
-public class Telefono {
+import java.io.Serializable;
+
+public class Telefono implements Serializable {
 
     private int  id;
     private String tipo;
@@ -40,4 +42,7 @@ public class Telefono {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+
+
 }

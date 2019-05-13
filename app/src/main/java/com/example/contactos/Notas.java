@@ -1,6 +1,8 @@
 package com.example.contactos;
 
-public class Notas {
+import java.io.Serializable;
+
+public class Notas implements Serializable {
 
     private int id;
     private String nota;

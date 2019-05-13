@@ -1,6 +1,8 @@
 package com.example.contactos;
 
-public class Direccion {
+import java.io.Serializable;
+
+public class Direccion implements Serializable, Comparable<Direccion> {
 
     private int id;
     private String calle;
@@ -84,6 +86,35 @@ public class Direccion {
 
     public void setProvincia(String provincia) {
         this.provincia = provincia;
+    }
+
+    @Override
+    public int compareTo(Direccion o) {
+
+        int comparacion = calle.compareTo(o.calle);
+        if (comparacion == 0) {
+            comparacion = numero.compareTo(o.numero);
+
+        }
+        if (comparacion == 0) {
+            comparacion = piso.compareTo(o.piso);
+
+        }
+        if (comparacion == 0) {
+            comparacion = puerta.compareTo(o.puerta);
+        }
+        if (comparacion == 0) {
+            comparacion = codigoPostal.compareTo(o.codigoPostal);
+        }
+        if (comparacion == 0) {
+            comparacion = ciudad.compareTo(o.ciudad);
+        }
+        if (comparacion == 0) {
+            comparacion = provincia.compareTo(o.provincia);
+        }
+
+
+        return comparacion;
     }
 }
 

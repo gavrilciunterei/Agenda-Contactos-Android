@@ -29,14 +29,7 @@ public class DataBaseExecute {
         return false;
     }
 
-    public boolean editarContacto(ContentValues nuevoRegistro, String tabla, int id) {
 
-        db= usdbh.getWritableDatabase();
-
-   //     db.update(tabla, valores, "ID=?", id);
-
-        return false;
-    }
 
     public int getLastId() {
 
@@ -49,6 +42,7 @@ public class DataBaseExecute {
         }
         return 0;
     }
+
 
 
 
@@ -184,18 +178,9 @@ public class DataBaseExecute {
 
     }
 
-    public void close(){
-
-        db.close();
-        usdbh.close();
-    }
-
-
 
     public ArrayList<Contacto> getContactoByName(String name) {
         ArrayList<Contacto> contacto = new ArrayList<>();
-
-
 
 
         db = usdbh.getReadableDatabase();
@@ -222,6 +207,30 @@ public class DataBaseExecute {
         }
 
         return contacto;
+    }
+
+    public boolean editarContacto(ContentValues nuevoRegistro, String tabla, String id) {
+
+        db= usdbh.getWritableDatabase();
+        if(db.update(tabla, nuevoRegistro, "ID=?", new String[] {  id}) != 0){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean borrarPorID(String id, String tabla){
+        db= usdbh.getWritableDatabase();
+
+        db.delete(tabla, "ID=?",new String[] {id });
+
+        return false;
+    }
+
+
+    public void close(){
+
+        db.close();
+        usdbh.close();
     }
 
 

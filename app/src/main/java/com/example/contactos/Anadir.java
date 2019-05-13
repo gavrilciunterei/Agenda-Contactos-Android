@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Anadir extends AppCompatActivity {
@@ -79,7 +80,14 @@ public class Anadir extends AppCompatActivity {
     private static final int REQUEST_SELECT_PHOTO = 1;
     private Bitmap bmp;
 
-    private String idEditar = "";
+    private Contacto conV;
+    private Direccion dirV;
+    private ArrayList<String> emailsV;
+    private ArrayList<String> notasV;
+    private ArrayList<Telefono> telefonosV;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,9 +190,13 @@ public class Anadir extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
 
         if(bundle != null) {
-            String dato1 = bundle.getString("ID");
-            llenarCamposEditar(dato1);
-            idEditar = dato1;
+            conV = (Contacto) bundle.getSerializable("CONTACTO");
+            dirV = (Direccion) bundle.getSerializable("DIRECCION");
+            notasV = bundle.getStringArrayList("NOTA");
+            emailsV = bundle.getStringArrayList("EMAIL");
+            telefonosV= (ArrayList<Telefono>) bundle.getSerializable("TELEFONO");
+
+            llenarCamposEditar();
             editar = true;
         }
 
@@ -199,15 +211,17 @@ public class Anadir extends AppCompatActivity {
 
     }
 
-    private void llenarCamposEditar(String id){
+    private void llenarCamposEditar(){
 
-        Contacto con = dbe.getContactoWithID(id);
+        Contacto con = conV;
         editTextNombre.setText(con.getNombre());
-        editTextApodo.setText(con.getNombre());
+        editTextApodo.setText(con.getApodo());
         editTextEmpresa.setText(con.getEmpresa());
+
         byte[] bytes = con.getImg();
         imageViewimg.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-        Direccion dir = dbe.getDireccionWithID(id);
+        Direccion dir = dirV;
+
         editTextCiudad.setText(dir.getCiudad());
         editTextCalle.setText(dir.getCalle());
         editTextCodigo.setText(dir.getCodigoPostal());
@@ -215,19 +229,21 @@ public class Anadir extends AppCompatActivity {
         editTextPuerta.setText(dir.getPuerta());
         editTextNumero.setText(dir.getNumero());
 
+
         List<String> list = new ArrayList<String>();
         list.add(dir.getProvincia());
         adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
         spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
-        at = new Adaptador_Telefono(this, dbe.getTelefonoWithID(id));
-        list_telefono.setAdapter(at);
 
-        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getCorreoWithID(id));
-        list_correo.setAdapter(arrayAdapterCorreo);
+        arrayListTelefonos.addAll(telefonosV);
+        at.notifyDataSetChanged();
 
-        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getNotasWithID(id));
-        list_Notas.setAdapter(arrayAdapterNotas);
+        arrayListCorreo.addAll(emailsV);
+        arrayAdapterCorreo.notifyDataSetChanged();
+
+        arrayListNotas.addAll(notasV);
+        arrayAdapterNotas.notifyDataSetChanged();
 
     }
 
@@ -311,6 +327,17 @@ public class Anadir extends AppCompatActivity {
         }
     }
 
+    private byte[] devolverImagen(){
+
+        BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
+        bmp = drawable.getBitmap();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
+        bmp.compress(Bitmap.CompressFormat.PNG, 0 , baos);
+        byte[] blob = baos.toByteArray();
+
+        return blob;
+    }
 
     private class anadirContacto implements View.OnClickListener {
 
@@ -319,15 +346,9 @@ public class Anadir extends AppCompatActivity {
 
             int maxid = dbe.getLastId();
 
-            BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
-            bmp = drawable.getBitmap();
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
-            bmp.compress(Bitmap.CompressFormat.PNG, 0 , baos);
-            byte[] blob = baos.toByteArray();
 
             ContentValues nuevoRegistroContacto = new ContentValues();
-            Contacto contacto = new Contacto(maxid, editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), blob);
+            Contacto contacto = new Contacto(maxid, editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), devolverImagen());
             nuevoRegistroContacto.put("ID", contacto.getId());
             nuevoRegistroContacto.put("NOMBRE", contacto.getNombre());
             nuevoRegistroContacto.put("APODO", contacto.getApodo());
@@ -393,13 +414,92 @@ public class Anadir extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+            Contacto contactoNuevo = new Contacto(conV.getId(), editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), devolverImagen());
+            String idEdit = Integer.toString(contactoNuevo.getId());
+
+            if(contactoNuevo.compareTo(conV) != 0){
+
+                ContentValues nuevoRegistroContacto = new ContentValues();
+                nuevoRegistroContacto.put("NOMBRE", contactoNuevo.getNombre());
+                nuevoRegistroContacto.put("APODO", contactoNuevo.getApodo());
+                nuevoRegistroContacto.put("EMPRESA", contactoNuevo.getEmpresa());
+                nuevoRegistroContacto.put("IMG", contactoNuevo.getImg());
+
+               dbe.editarContacto(nuevoRegistroContacto, "CONTACTO", idEdit);
 
 
+            }
 
+            Direccion direccionNueva = new Direccion(dirV.getId(),editTextCalle.getText().toString(), editTextNumero.getText().toString(),
+                    editTextPiso.getText().toString(), editTextPuerta.getText().toString(), editTextCodigo.getText().toString(),
+                    editTextCiudad.getText().toString(), spinnerProvincia.getSelectedItem().toString());
+
+            if(direccionNueva.compareTo(dirV) != 0){
+
+
+                ContentValues nuevoRegistroDireccion = new ContentValues();
+
+                nuevoRegistroDireccion.put("CALLE", direccionNueva.getCalle());
+                nuevoRegistroDireccion.put("NUMERO", direccionNueva.getNumero());
+                nuevoRegistroDireccion.put("PISO", direccionNueva.getPiso());
+                nuevoRegistroDireccion.put("PUERTA", direccionNueva.getPuerta());
+                nuevoRegistroDireccion.put("CODIGO", direccionNueva.getCodigoPostal());
+                nuevoRegistroDireccion.put("CIUDAD", direccionNueva.getCiudad());
+                nuevoRegistroDireccion.put("PROVINCIA", direccionNueva.getProvincia());
+                dbe.editarContacto(nuevoRegistroDireccion, "DIRECCION", idEdit);
+
+            }
+
+            if(!arrayListTelefonos.equals(telefonosV)){
+                dbe.borrarPorID(idEdit, "TELEFONO");
+                for(int i = 0; i < arrayListTelefonos.size(); i++) {
+
+                    ContentValues nuevoRegistroTelefono = new ContentValues();
+                    nuevoRegistroTelefono.put("ID", idEdit);
+                    nuevoRegistroTelefono.put("TIPO", arrayListTelefonos.get(i).getTipo());
+                    nuevoRegistroTelefono.put("TELEFONO", arrayListTelefonos.get(i).getTelefono());
+
+                    dbe.anadirContacto(nuevoRegistroTelefono, "TELEFONO");
+                }
+            }
+            if(!arrayListNotas.equals(notasV)){
+                dbe.borrarPorID(idEdit, "NOTAS");
+                for(int i = 0; i < arrayListNotas.size(); i++) {
+                    ContentValues nuevoRegistroNotas = new ContentValues();
+                    nuevoRegistroNotas.put("ID", idEdit);
+                    nuevoRegistroNotas.put("NOTA", arrayListNotas.get(i).toString());
+                    dbe.anadirContacto(nuevoRegistroNotas, "NOTAS");
+                }
+
+            }
+            if(!arrayListCorreo.equals(emailsV)){
+
+                dbe.borrarPorID(idEdit, "EMAIL");
+                for(int i = 0; i < arrayListCorreo.size(); i++) {
+
+                    ContentValues nuevoRegistroEmail = new ContentValues();
+                    nuevoRegistroEmail.put("ID", idEdit);
+                    nuevoRegistroEmail.put("EMAIL", arrayListCorreo.get(i).toString());
+                    dbe.anadirContacto(nuevoRegistroEmail, "EMAIL");
+
+                }
+
+            }
+            mensajeContactoEditado();
 
 
         }
     }
+
+    public void mensajeContactoEditado()
+    {
+        Toast mensaje =
+                Toast.makeText(getApplicationContext(),
+                        "Contacto editado correctamente", Toast.LENGTH_SHORT);
+        mensaje.show();
+    }
+
+
 
     public void mensajeNormalContacto()
     {

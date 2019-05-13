@@ -45,6 +45,15 @@ public class Ver extends AppCompatActivity {
     private ListView list_Notas;
     private ArrayAdapter<String> arrayAdapterNotas;
 
+    //Expxortar para Editar
+    private Contacto con;
+    private Direccion dir;
+    private ArrayList<String> emails;
+    private ArrayList<String> notas;
+    private ArrayList<Telefono> telefonos;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,37 +113,43 @@ public class Ver extends AppCompatActivity {
         }
 
 
+
+
     }
 
 
     private void llenarCamposEditar(){
 
-        Contacto con = dbe.getContactoWithID(id);
+        con = dbe.getContactoWithID(id);
         editTextNombre2.setText(con.getNombre());
-        editTextApodo2.setText(con.getNombre());
+        editTextApodo2.setText(con.getApodo());
         editTextEmpresa2.setText(con.getEmpresa());
         byte[] bytes = con.getImg();
         imageViewimg2.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-        Direccion dir = dbe.getDireccionWithID(id);
+
+        dir = dbe.getDireccionWithID(id);
         editTextCiudad.setText(dir.getCiudad());
         editTextCalle.setText(dir.getCalle());
         editTextCodigo.setText(dir.getCodigoPostal());
         editTextPiso.setText(dir.getPiso());
         editTextPuerta.setText(dir.getPuerta());
         editTextNumero.setText(dir.getNumero());
-
         List<String> list = new ArrayList<String>();
         list.add(dir.getProvincia());
         adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
         spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
+
+        telefonos = dbe.getTelefonoWithID(id);
         at = new Adaptador_Telefono(this, dbe.getTelefonoWithID(id));
         list_telefono.setAdapter(at);
 
-        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getCorreoWithID(id));
+        emails = dbe.getCorreoWithID(id);
+        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, emails);
         list_correo.setAdapter(arrayAdapterCorreo);
 
-        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, dbe.getNotasWithID(id));
+        notas = dbe.getNotasWithID(id);
+        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, notas);
         list_Notas.setAdapter(arrayAdapterNotas);
     }
 
@@ -145,11 +160,18 @@ public class Ver extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
+            //Paso los objetos a la clase añadir y ahi relleno los campos con ellos
             Intent i = new Intent(Ver.this, Anadir.class );
-            i.putExtra("ID", id);
+            i.putExtra("CONTACTO", con);
+            i.putExtra("DIRECCION", dir);
+            i.putExtra("NOTA", notas);
+            i.putExtra("EMAIL", emails);
+            i.putExtra("TELEFONO", telefonos);
             startActivity(i);
 
 
+            //Enciar los objetos(Contacto, telefono, email..) a la siguiente vista y ahi lo relleno con esos los campos
+            //Al dar click en guardar en la siguiente vista, comparo el objeto enviado con lo que traen los cambios(con.getNombre() != editTextNombre.getText())
 
         }
     }
