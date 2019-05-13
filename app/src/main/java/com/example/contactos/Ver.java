@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -52,6 +56,9 @@ public class Ver extends AppCompatActivity {
     private ArrayList<String> notas;
     private ArrayList<Telefono> telefonos;
 
+    private Button buttonLlamar, buttonMandarCorreo;
+
+
 
 
     @Override
@@ -91,6 +98,7 @@ public class Ver extends AppCompatActivity {
 
 
 
+
         list_correo = (ListView) findViewById(R.id.list_correo2);
         list_correo.setEnabled(false);
 
@@ -102,6 +110,9 @@ public class Ver extends AppCompatActivity {
         buttonEditar = (Button) findViewById(R.id.buttonEditar);
         buttonEditar.setOnClickListener(new openEditarMode());
 
+        buttonLlamar = findViewById(R.id.buttonLlamar);
+     //   buttonLlamar.setOnClickListener(new );
+
 
         //Apartado edicion
         Bundle bundle=getIntent().getExtras();
@@ -111,6 +122,7 @@ public class Ver extends AppCompatActivity {
             id = dato1;
             llenarCamposEditar();
         }
+
 
 
 

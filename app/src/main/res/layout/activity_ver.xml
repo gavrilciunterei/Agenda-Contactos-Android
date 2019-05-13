@@ -67,26 +67,27 @@
                 android:orientation="horizontal">
 
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:background="@null" />
-
                 <Button
-                    android:id="@+id/button2"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@null"
+                    android:id="@+id/buttonLlamar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/circle"
+                    android:drawableLeft="@drawable/ic_phone_in_talk_black_24dp"
+                    android:gravity="center"
                     android:scaleType="fitXY"
                     />
 
+
+
                 <Button
-                    android:id="@+id/button3"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@null"
-                    android:scaleType="fitXY"
-                    />
+                    android:id="@+id/buttonMandarCorreo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/circle"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:scaleType="fitXY" />
 
 
             </LinearLayout>
