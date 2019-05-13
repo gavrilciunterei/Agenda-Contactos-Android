@@ -36,17 +36,17 @@ public class Ver extends AppCompatActivity {
     private Button buttonEditar;
 
     //listviews dinamicos telefonos
-    private ListView list_telefono;
+    private NonScrollListView list_telefono;
     private Adaptador_Telefono at;
 
 
     //listviw correo
-    private ListView list_correo;
+    private NonScrollListView list_correo;
     private ArrayAdapter<String> arrayAdapterCorreo;
 
 
     //listviw notas
-    private ListView list_Notas;
+    private NonScrollListView list_Notas;
     private ArrayAdapter<String> arrayAdapterNotas;
 
     //Expxortar para Editar
@@ -93,18 +93,18 @@ public class Ver extends AppCompatActivity {
 
 
 
-        list_telefono = (ListView) findViewById(R.id.list_telefono2);
+        list_telefono = (NonScrollListView ) findViewById(R.id.list_telefono2);
         list_telefono.setEnabled(false);
 
 
 
 
-        list_correo = (ListView) findViewById(R.id.list_correo2);
+        list_correo = (NonScrollListView) findViewById(R.id.list_correo2);
         list_correo.setEnabled(false);
 
 
 
-        list_Notas = (ListView) findViewById(R.id.list_notas2);
+        list_Notas = (NonScrollListView) findViewById(R.id.list_notas2);
         list_Notas.setEnabled(false);
 
         buttonEditar = (Button) findViewById(R.id.buttonEditar);

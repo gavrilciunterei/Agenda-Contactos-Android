@@ -8,7 +8,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:id="@+id/linear_anadir"
@@ -118,13 +122,13 @@
                     android:background="@android:drawable/ic_input_add" />
             </LinearLayout>
 
-            <ListView
+            <com.example.contactos.NonScrollListView
                 android:id="@+id/list_telefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp">
 
-            </ListView>
+            </com.example.contactos.NonScrollListView>
 
             <LinearLayout
                 android:id="@+id/linear_email_repeat"
@@ -150,7 +154,7 @@
                     android:background="@android:drawable/ic_input_add" />
             </LinearLayout>
 
-            <ListView
+            <com.example.contactos.NonScrollListView
                 android:id="@+id/list_correo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,13 +184,13 @@
                     android:background="@android:drawable/ic_input_add" />
             </LinearLayout>
 
-            <ListView
+            <com.example.contactos.NonScrollListView
                 android:id="@+id/list_notas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp">
 
-            </ListView>
+            </com.example.contactos.NonScrollListView>
 
             <include layout="@layout/diseno_direccion" />
 
@@ -195,7 +199,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/anadirContacto"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"/>
         </LinearLayout>
     </ScrollView>
 

@@ -8,7 +8,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:id="@+id/linear_anadir"
@@ -40,10 +44,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_marginRight="8dp"
-                >
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageViewimg2"
@@ -75,9 +78,7 @@
                     android:background="@drawable/circle"
                     android:drawableLeft="@drawable/ic_phone_in_talk_black_24dp"
                     android:gravity="center"
-                    android:scaleType="fitXY"
-                    />
-
+                    android:scaleType="fitXY" />
 
 
                 <Button
@@ -95,8 +96,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginRight="8dp">
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/editTextNombre2"
@@ -123,27 +124,42 @@
                     android:inputType="textPersonName" />
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/list_telefono2"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="8dp">
+                android:layout_height="match_parent">
 
-            </ListView>
+                <com.example.contactos.NonScrollListView
+                    android:id="@+id/list_telefono2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp">
 
-            <ListView
-                android:id="@+id/list_correo2"
+                </com.example.contactos.NonScrollListView>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"/>
+                android:layout_height="match_parent" >
 
-            <ListView
-                android:id="@+id/list_notas2"
+                <com.example.contactos.NonScrollListView
+                    android:id="@+id/list_correo2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp">
+                android:layout_height="match_parent" >
 
-            </ListView>
+                <com.example.contactos.NonScrollListView
+                    android:id="@+id/list_notas2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp">
+
+                </com.example.contactos.NonScrollListView>
+            </android.support.v7.widget.CardView>
 
             <include layout="@layout/diseno_direccion" />
 

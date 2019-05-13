@@ -60,21 +60,21 @@ public class Anadir extends AppCompatActivity {
     //listviews dinamicos telefonos
     private Button buttonAddTelefono;
     private ArrayList<Telefono> arrayListTelefonos;
-    private ListView list_telefono;
+    private NonScrollListView list_telefono;
     private Adaptador_Telefono at;
 
 
     //listviw correo
     private Button buttonAddCorreo;
     private ArrayList<String> arrayListCorreo;
-    private ListView list_correo;
+    private NonScrollListView list_correo;
     private ArrayAdapter<String> arrayAdapterCorreo;
 
 
     //listviw notas
     private Button buttonAddNotas;
     private ArrayList<String> arrayListNotas;
-    private ListView list_Notas;
+    private NonScrollListView list_Notas;
     private ArrayAdapter<String> arrayAdapterNotas;
 
     private static final int REQUEST_SELECT_PHOTO = 1;
@@ -132,7 +132,7 @@ public class Anadir extends AppCompatActivity {
         buttonAddTelefono.setOnClickListener(new addViewTelefono());
 
         arrayListTelefonos = new ArrayList<>();
-        list_telefono = (ListView) findViewById(R.id.list_telefono);
+        list_telefono = (NonScrollListView) findViewById(R.id.list_telefono);
         at = new Adaptador_Telefono(this, arrayListTelefonos);
         list_telefono.setAdapter(at);
         list_telefono.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -151,7 +151,7 @@ public class Anadir extends AppCompatActivity {
         buttonAddCorreo.setOnClickListener(new addViewCorreo());
 
         arrayListCorreo = new ArrayList<>();
-        list_correo = (ListView) findViewById(R.id.list_correo);
+        list_correo = (NonScrollListView) findViewById(R.id.list_correo);
         arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListCorreo);
         list_correo.setAdapter(arrayAdapterCorreo);
 
@@ -171,7 +171,7 @@ public class Anadir extends AppCompatActivity {
         buttonAddNotas.setOnClickListener(new addViewNotas());
 
         arrayListNotas= new ArrayList<>();
-        list_Notas = (ListView) findViewById(R.id.list_notas);
+        list_Notas = (NonScrollListView) findViewById(R.id.list_notas);
         arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListNotas);
         list_Notas.setAdapter(arrayAdapterNotas);
 
