@@ -4,17 +4,11 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -92,11 +86,8 @@ public class Ver extends AppCompatActivity {
         spinnerProvincia.setEnabled(false);
 
 
-
         list_telefono = (NonScrollListView ) findViewById(R.id.list_telefono2);
         list_telefono.setEnabled(false);
-
-
 
 
         list_correo = (NonScrollListView) findViewById(R.id.list_correo2);
@@ -180,10 +171,6 @@ public class Ver extends AppCompatActivity {
             i.putExtra("EMAIL", emails);
             i.putExtra("TELEFONO", telefonos);
             startActivity(i);
-
-
-            //Enciar los objetos(Contacto, telefono, email..) a la siguiente vista y ahi lo relleno con esos los campos
-            //Al dar click en guardar en la siguiente vista, comparo el objeto enviado con lo que traen los cambios(con.getNombre() != editTextNombre.getText())
 
         }
     }
