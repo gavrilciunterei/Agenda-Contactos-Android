@@ -126,39 +126,85 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:cardBackgroundColor="#FFFFFF">
 
-                <com.example.contactos.NonScrollListView
-                    android:id="@+id/list_telefono2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                </com.example.contactos.NonScrollListView>
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Telefonos:"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <com.example.contactos.NonScrollListView
+                        android:id="@+id/list_telefono2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp">
+
+                    </com.example.contactos.NonScrollListView>
+                </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <com.example.contactos.NonScrollListView
-                    android:id="@+id/list_correo2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Email:"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+
+                    <com.example.contactos.NonScrollListView
+                        android:id="@+id/list_correo2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp" />
+                </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <com.example.contactos.NonScrollListView
-                    android:id="@+id/list_notas2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                </com.example.contactos.NonScrollListView>
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Notas:"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+
+                    <com.example.contactos.NonScrollListView
+                        android:id="@+id/list_notas2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp">
+
+                    </com.example.contactos.NonScrollListView>
+                </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <include layout="@layout/diseno_direccion" />

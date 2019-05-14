@@ -111,7 +111,7 @@ public class Ver extends AppCompatActivity {
         buttonEditar.setOnClickListener(new openEditarMode());
 
         buttonLlamar = findViewById(R.id.buttonLlamar);
-     //   buttonLlamar.setOnClickListener(new );
+      //  buttonLlamar.setOnClickListener(new );
 
 
         //Apartado edicion
