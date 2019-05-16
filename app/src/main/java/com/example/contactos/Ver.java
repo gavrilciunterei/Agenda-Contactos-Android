@@ -1,15 +1,22 @@
 package com.example.contactos;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +58,6 @@ public class Ver extends AppCompatActivity {
     private ArrayList<Telefono> telefonos;
 
     private Button buttonLlamar, buttonMandarCorreo;
-
 
 
 
@@ -102,7 +108,14 @@ public class Ver extends AppCompatActivity {
         buttonEditar.setOnClickListener(new openEditarMode());
 
         buttonLlamar = findViewById(R.id.buttonLlamar);
-      //  buttonLlamar.setOnClickListener(new );
+        buttonLlamar.setOnClickListener(new abrirMenu());
+        registerForContextMenu(buttonLlamar);
+
+
+        buttonMandarCorreo = findViewById(R.id.buttonMandarCorreo);
+        buttonMandarCorreo.setOnClickListener(new abrirMenu());
+        registerForContextMenu(buttonMandarCorreo);
+
 
 
         //Apartado edicion
@@ -114,11 +127,86 @@ public class Ver extends AppCompatActivity {
             llenarCamposEditar();
         }
 
+    }
 
 
 
+
+    private class abrirMenu implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            openContextMenu(v);
+        }
 
     }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        if(v.getId() == R.id.buttonLlamar) {
+
+            int tamaño = telefonos.size();
+            for (int i = 0; i < tamaño; i++) {
+                menu.add(1, i, i, telefonos.get(i).getTelefono());
+            }
+            menu.setHeaderTitle("Llamar a:");
+
+        }else if(v.getId() == R.id.buttonMandarCorreo){
+            int tamaño = emails.size();
+            for (int i = 0; i < tamaño; i++) {
+                int a = 3;
+                menu.add(1, a, a, emails.get(i));
+                a++;
+            }
+            menu.setHeaderTitle("Enviar email a:");
+        }
+}
+
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case 0:
+                llamar(telefonos.get(0).getTelefono());
+                return true;
+            case 1:
+                llamar(telefonos.get(1).getTelefono());
+                return true;
+            case 2:
+                llamar(telefonos.get(2).getTelefono());
+                return true;
+            case 3:
+                sendEmail(emails.get(0));
+                return true;
+            case 4:
+                llamar(emails.get(1));
+                return true;
+            case 5:
+                sendEmail(emails.get(2));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+    private void llamar(String telefono){
+
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", telefono, null)));
+
+    }
+    private void sendEmail(String email){
+
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Asunto..");
+        i.putExtra(Intent.EXTRA_TEXT   , "Ejemplo de cuerpo de texto");
+        try {
+            startActivity(Intent.createChooser(i, "Elige la app para enviar..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(Ver.this, "No hay clientes de correo instalados.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
 
     private void llenarCamposEditar(){
@@ -144,7 +232,7 @@ public class Ver extends AppCompatActivity {
 
 
         telefonos = dbe.getTelefonoWithID(id);
-        at = new Adaptador_Telefono(this, dbe.getTelefonoWithID(id));
+        at = new Adaptador_Telefono(this, telefonos);
         list_telefono.setAdapter(at);
 
         emails = dbe.getCorreoWithID(id);
