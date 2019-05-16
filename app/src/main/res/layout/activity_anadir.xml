@@ -198,9 +198,13 @@
                 android:id="@+id/buttonAnadir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/anadirContacto"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:background="@null"
+                android:text="@string/anadirContacto"
+                android:gravity="left|center_vertical"/>
+
+
         </LinearLayout>
     </ScrollView>
 

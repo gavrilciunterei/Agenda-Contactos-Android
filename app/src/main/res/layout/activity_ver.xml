@@ -99,7 +99,7 @@
                 android:layout_marginRight="8dp"
                 android:orientation="vertical">
 
-                <EditText
+                <TextView
                     android:id="@+id/editTextNombre2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                     android:hint="@string/nombre"
                     android:inputType="textPersonName" />
 
-                <EditText
+                <TextView
                     android:id="@+id/editTextApodo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                     android:hint="@string/apodo"
                     android:inputType="textPersonName" />
 
-                <EditText
+                <TextView
                     android:id="@+id/editTextEmpresa2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -132,7 +132,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:cardBackgroundColor="#FFFFFF"
-                android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp">
 
                 <LinearLayout
@@ -165,7 +164,6 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp">
 
                 <LinearLayout
@@ -195,7 +193,6 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
                 >
 
@@ -221,10 +218,21 @@
                     </com.example.contactos.NonScrollListView>
                 </LinearLayout>
 
+
             </android.support.v7.widget.CardView>
 
-            <include layout="@layout/diseno_direccion" />
+            <include layout="@layout/diseno_direccion_ver" />
 
+            <Button
+                android:id="@+id/buttonEliminar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="8dp"
+                android:background="@null"
+                android:text="Eliminar contcto"
+                android:gravity="left|center_vertical"
+                android:textColor="#ff0000"/>
         </LinearLayout>
     </ScrollView>
 

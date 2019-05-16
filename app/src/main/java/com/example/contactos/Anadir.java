@@ -1,6 +1,7 @@
 package com.example.contactos;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -86,6 +88,8 @@ public class Anadir extends AppCompatActivity {
     private ArrayList<String> notasV;
     private ArrayList<Telefono> telefonosV;
 
+    private Provincias provincias;
+
 
 
 
@@ -121,11 +125,10 @@ public class Anadir extends AppCompatActivity {
         adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
         spinnerTipo.setAdapter(adapterSpinner);
 
-        Provincias provincias = new Provincias();
+        provincias = new Provincias();
         spinnerProvincia = (Spinner) findViewById(R.id.spinnerProvincia);
         adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, provincias.getProvincias());
         spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
-
 
         //Anadir telefonos a un listView y borrar manteniendo pulsado
         buttonAddTelefono = (Button) findViewById(R.id.buttonAddTelefono);
@@ -230,10 +233,8 @@ public class Anadir extends AppCompatActivity {
         editTextNumero.setText(dir.getNumero());
 
 
-        List<String> list = new ArrayList<String>();
-        list.add(dir.getProvincia());
-        adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
-        spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
+        int posicionSelect = provincias.returnPositionProvincia(dir.getProvincia());
+        spinnerProvincia.setSelection(posicionSelect);
 
 
         arrayListTelefonos.addAll(telefonosV);
@@ -488,11 +489,13 @@ public class Anadir extends AppCompatActivity {
             }
             mensajeContactoEditado();
 
-
         }
     }
 
-    public void mensajeContactoEditado()
+
+
+
+            public void mensajeContactoEditado()
     {
         Toast mensaje =
                 Toast.makeText(getApplicationContext(),
@@ -526,6 +529,7 @@ public class Anadir extends AppCompatActivity {
             Toast.makeText(this, "Solo se pueden añadir 3 campos", Toast.LENGTH_SHORT).show();
 
     }
+
 
 
 

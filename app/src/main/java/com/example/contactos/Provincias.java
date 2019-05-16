@@ -2,7 +2,7 @@ package com.example.contactos;
 
 import java.util.ArrayList;
 
-public class Provincias {
+public class Provincias{
 
 
     private ArrayList<String> provincias;
@@ -69,5 +69,16 @@ public class Provincias {
     public ArrayList<String> getProvincias() {
         return provincias;
     }
+
+    public int returnPositionProvincia(String provincia){
+        for(int i = 0; i < provincias.size(); i++){
+            if(provincias.get(i).equals(provincia)){
+                return i;
+            }
+        }
+
+        return 0;
+    }
 }
+
 

@@ -1,10 +1,12 @@
 package com.example.contactos;
 
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,8 +29,8 @@ public class Ver extends AppCompatActivity {
     private DataBaseExecute dbe;
     private String id;
 
-    private EditText editTextNombre2, editTextApodo2, editTextEmpresa2;
-    private EditText editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
+    private TextView editTextNombre2, editTextApodo2, editTextEmpresa2;
+    private TextView editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
     private ImageView imageViewimg2;
     private Spinner spinnerTipo, spinnerProvincia;
     private long backPressedTime;
@@ -57,7 +60,7 @@ public class Ver extends AppCompatActivity {
     private ArrayList<String> notas;
     private ArrayList<Telefono> telefonos;
 
-    private Button buttonLlamar, buttonMandarCorreo;
+    private Button buttonLlamar, buttonMandarCorreo, buttonEliminar;
 
 
 
@@ -68,29 +71,19 @@ public class Ver extends AppCompatActivity {
         getSupportActionBar().hide();
         dbe = new DataBaseExecute(this);
 
-        editTextNombre2 = (EditText) findViewById(R.id.editTextNombre2);
-        editTextNombre2.setEnabled(false);
-        editTextApodo2 = (EditText) findViewById(R.id.editTextApodo2);
-        editTextApodo2.setEnabled(false);
-        editTextEmpresa2 = (EditText) findViewById(R.id.editTextEmpresa2);
-        editTextEmpresa2.setEnabled(false);
-        editTextCalle = (EditText) findViewById(R.id.editTextCalle);
-        editTextCalle.setEnabled(false);
-        editTextPiso = (EditText) findViewById(R.id.editTextPiso);
-        editTextPiso.setEnabled(false);
-        editTextNumero = (EditText) findViewById(R.id.editTextNumero);
-        editTextNumero.setEnabled(false);
-        editTextPuerta = (EditText) findViewById(R.id.editTextPuerta);
-        editTextPuerta.setEnabled(false);
-        editTextCodigo = (EditText) findViewById(R.id.editTextCodigo);
-        editTextCodigo.setEnabled(false);
-        editTextCiudad = (EditText) findViewById(R.id.editTextCiudad);
-        editTextCiudad.setEnabled(false);
+        editTextNombre2 = findViewById(R.id.editTextNombre2);
+        editTextApodo2 =  findViewById(R.id.editTextApodo2);
+        editTextEmpresa2 = findViewById(R.id.editTextEmpresa2);
+        editTextCalle =  findViewById(R.id.editTextCalle2);
+        editTextPiso =  findViewById(R.id.editTextPiso2);
+        editTextNumero =  findViewById(R.id.editTextNumero2);
+        editTextPuerta = findViewById(R.id.editTextPuerta2);
+        editTextCodigo =  findViewById(R.id.editTextCodigo2);
+        editTextCiudad =  findViewById(R.id.editTextCiudad2);
         imageViewimg2 = (ImageView) findViewById(R.id.imageViewimg2);
         imageViewimg2.setEnabled(false);
-        spinnerProvincia = (Spinner) findViewById(R.id.spinnerProvincia);
+        spinnerProvincia =  findViewById(R.id.spinnerProvincia3);
         spinnerProvincia.setEnabled(false);
-
 
         list_telefono = (NonScrollListView ) findViewById(R.id.list_telefono2);
         list_telefono.setEnabled(false);
@@ -107,6 +100,8 @@ public class Ver extends AppCompatActivity {
         buttonEditar = (Button) findViewById(R.id.buttonEditar);
         buttonEditar.setOnClickListener(new openEditarMode());
 
+
+
         buttonLlamar = findViewById(R.id.buttonLlamar);
         buttonLlamar.setOnClickListener(new abrirMenu());
         registerForContextMenu(buttonLlamar);
@@ -116,6 +111,9 @@ public class Ver extends AppCompatActivity {
         buttonMandarCorreo.setOnClickListener(new abrirMenu());
         registerForContextMenu(buttonMandarCorreo);
 
+
+        buttonEliminar = findViewById(R.id.buttonEliminar);
+        buttonEliminar.setOnClickListener(new eliminarContacto());
 
 
         //Apartado edicion
@@ -259,6 +257,37 @@ public class Ver extends AppCompatActivity {
             i.putExtra("EMAIL", emails);
             i.putExtra("TELEFONO", telefonos);
             startActivity(i);
+
+        }
+    }
+
+    private class eliminarContacto implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+
+
+            AlertDialog.Builder dialogo1 = new AlertDialog.Builder(Ver.this);
+            dialogo1.setTitle("Importante");
+            dialogo1.setIcon(R.drawable.ic_error_black_24dp);
+            dialogo1.setMessage("¿ Está seguro que desea eliminar el contacto ?");
+            dialogo1.setCancelable(false);
+            dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                    String idEmilinar = Integer.toString(con.getId());
+                    dbe.borrarPorID(idEmilinar, "CONTACTO");
+                    dbe.borrarPorID(idEmilinar, "DIRECCION");
+                    dbe.borrarPorID(idEmilinar, "EMAIL");
+                    dbe.borrarPorID(idEmilinar, "NOTAS");
+                    dbe.borrarPorID(idEmilinar, "TELEFONO");
+                    finish();
+                }
+            });
+            dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                }
+            });
+            dialogo1.show();
 
         }
     }
