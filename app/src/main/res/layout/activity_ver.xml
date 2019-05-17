@@ -36,7 +36,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@null"
-                    android:text="Editar"
+                    android:text="@string/editar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
@@ -46,14 +46,16 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
 
                 <ImageView
                     android:id="@+id/imageViewimg2"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@mipmap/usuario_nulo" />
+                    app:srcCompat="@mipmap/usuario_nulo"
+                    android:contentDescription="@string/todo" />
 
 
             </LinearLayout>
@@ -78,7 +80,9 @@
                     android:background="@drawable/circle"
                     android:drawableLeft="@drawable/ic_phone_in_talk_black_24dp"
                     android:gravity="center"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="10dp"
+                    android:drawableStart="@drawable/ic_phone_in_talk_black_24dp" />
 
 
                 <Button
@@ -88,7 +92,9 @@
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/circle"
                     android:drawableLeft="@drawable/ic_email_black_24dp"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="10dp"
+                    android:drawableStart="@drawable/ic_email_black_24dp" />
 
 
             </LinearLayout>
@@ -97,7 +103,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
 
                 <TextView
                     android:id="@+id/editTextNombre2"
@@ -228,7 +235,8 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/buttonEliminar"
@@ -237,7 +245,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginRight="8dp"
                 android:background="@null"
-                android:text="Eliminar contcto"
+                android:text="@string/eliminar_contcto"
                 android:gravity="left|center_vertical"
                 android:textColor="#ff0000"/>
         </LinearLayout>

@@ -110,8 +110,6 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         buttonEliminar.setOnClickListener(new eliminarContacto());
 
 
-        cargarMapa();
-
 
         //Apartado edicion
         Bundle bundle = getIntent().getExtras();
@@ -122,6 +120,14 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         }
 
     }
+
+    @Override
+    public void onRestart() {
+
+        super.onRestart();
+        llenarCamposEditar();
+    }
+
 
 
     private class abrirMenu implements View.OnClickListener {
@@ -238,6 +244,9 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         ArrayAdapter<String> arrayAdapterNotas;
         arrayAdapterNotas = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notas);
         list_Notas.setAdapter(arrayAdapterNotas);
+
+        cargarMapa();
+
     }
 
 

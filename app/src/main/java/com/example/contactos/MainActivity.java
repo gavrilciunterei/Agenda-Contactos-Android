@@ -1,6 +1,9 @@
 package com.example.contactos;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -112,18 +115,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkPermission() {
 
-        if(!Permisos.Check_FINE_LOCATION(MainActivity.this)){
-            Permisos.Request_FINE_LOCATION(MainActivity.this,1);
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.CALL_PHONE,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.INTERNET,
+        };
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
-        if(!Permisos.Check_CALL_PHONE(MainActivity.this)){
-            Permisos.Request_CALL_PHONE(MainActivity.this,2);
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
         }
-        if(!Permisos.Check_READ_EXTERNAL_STORAGE(MainActivity.this)) {
-            Permisos.Request_READ_EXTERNAL_STORAGE(MainActivity.this,3);
-        }
-        if(!Permisos.Check_INTERNET(MainActivity.this)) {
-            Permisos.Request_INTERNET(MainActivity.this,4);
-        }
+        return true;
     }
 
 

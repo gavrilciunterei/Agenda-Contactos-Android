@@ -10,5 +10,8 @@
     <string name="correo">Correo</string>
     <string name="notas">Notas</string>
     <string name="anadirContacto">Guardar</string>
+    <string name="editar">Editar</string>
+    <string name="todo">TODO</string>
+    <string name="eliminar_contcto">Eliminar contcto</string>
 
 </resources>
