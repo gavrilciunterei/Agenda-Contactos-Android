@@ -330,14 +330,15 @@ public class Anadir extends AppCompatActivity {
 
     private byte[] devolverImagen(){
 
-        BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
-        bmp = drawable.getBitmap();
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
-        bmp.compress(Bitmap.CompressFormat.PNG, 0 , baos);
-        byte[] blob = baos.toByteArray();
+            BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
+            bmp = drawable.getBitmap();
 
-        return blob;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
+            bmp.compress(Bitmap.CompressFormat.PNG, 0, baos);
+            byte[] blob = baos.toByteArray();
+            return blob;
+
     }
 
     private class anadirContacto implements View.OnClickListener {
@@ -356,7 +357,6 @@ public class Anadir extends AppCompatActivity {
             nuevoRegistroContacto.put("EMPRESA", contacto.getEmpresa());
             nuevoRegistroContacto.put("IMG", contacto.getImg());
             dbe.anadirContacto(nuevoRegistroContacto, "CONTACTO");
-
 
 
 

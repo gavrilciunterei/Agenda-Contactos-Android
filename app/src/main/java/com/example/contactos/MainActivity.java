@@ -135,19 +135,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkPermission() {
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-            } else {
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        1);
-            }
+        if(!Permisos.Check_FINE_LOCATION(MainActivity.this))
+        {
+            Permisos.Request_FINE_LOCATION(MainActivity.this,1);
+        }
+        if(!Permisos.Check_CALL_PHONE(MainActivity.this))
+        {
+            Permisos.Request_CALL_PHONE(MainActivity.this,2);
+        }
+        if(!Permisos.Check_READ_EXTERNAL_STORAGE(MainActivity.this))
+        {
+            Permisos.Request_READ_EXTERNAL_STORAGE(MainActivity.this,3);
+        }
+        if(!Permisos.Check_INTERNET(MainActivity.this))
+        {
+            Permisos.Request_INTERNET(MainActivity.this,4);
         }
     }
 

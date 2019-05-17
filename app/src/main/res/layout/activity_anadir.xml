@@ -94,9 +94,9 @@
             <LinearLayout
                 android:id="@+id/linear_telefono_repeat"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginRight="8dp">
+                android:layout_height="50dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal">
 
 
                 <Spinner
@@ -116,10 +116,13 @@
 
                 <Button
                     android:id="@+id/buttonAddTelefono"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:drawable/ic_input_add" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/circle2"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:gravity="center"
+                    android:scaleType="fitXY" />
             </LinearLayout>
 
             <com.example.contactos.NonScrollListView
@@ -133,9 +136,9 @@
             <LinearLayout
                 android:id="@+id/linear_email_repeat"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginRight="8dp">
+                android:layout_height="50dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/editTextCorreo"
@@ -148,10 +151,13 @@
 
                 <Button
                     android:id="@+id/buttonAddEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:drawable/ic_input_add" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/circle2"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:gravity="center"
+                    android:scaleType="fitXY" />
             </LinearLayout>
 
             <com.example.contactos.NonScrollListView
@@ -178,10 +184,13 @@
 
                 <Button
                     android:id="@+id/buttonAddNotas"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:drawable/ic_input_add" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/circle2"
+                    android:drawableLeft="@drawable/ic_add_black_24dp"
+                    android:gravity="center"
+                    android:scaleType="fitXY" />
             </LinearLayout>
 
             <com.example.contactos.NonScrollListView

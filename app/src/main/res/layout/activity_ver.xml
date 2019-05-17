@@ -223,6 +223,13 @@
 
             <include layout="@layout/diseno_direccion_ver" />
 
+            <fragment
+                android:id="@+id/mapa"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginRight="8dp" />
+
             <Button
                 android:id="@+id/buttonEliminar"
                 android:layout_width="match_parent"

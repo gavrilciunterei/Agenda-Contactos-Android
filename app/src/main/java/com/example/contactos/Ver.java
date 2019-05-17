@@ -4,6 +4,9 @@ import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -21,10 +24,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ver extends AppCompatActivity {
+public class Ver extends AppCompatActivity implements OnMapReadyCallback {
 
     private DataBaseExecute dbe;
     private String id;
@@ -63,6 +76,8 @@ public class Ver extends AppCompatActivity {
     private Button buttonLlamar, buttonMandarCorreo, buttonEliminar;
 
 
+    private GoogleMap mapa;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,20 +87,20 @@ public class Ver extends AppCompatActivity {
         dbe = new DataBaseExecute(this);
 
         editTextNombre2 = findViewById(R.id.editTextNombre2);
-        editTextApodo2 =  findViewById(R.id.editTextApodo2);
+        editTextApodo2 = findViewById(R.id.editTextApodo2);
         editTextEmpresa2 = findViewById(R.id.editTextEmpresa2);
-        editTextCalle =  findViewById(R.id.editTextCalle2);
-        editTextPiso =  findViewById(R.id.editTextPiso2);
-        editTextNumero =  findViewById(R.id.editTextNumero2);
+        editTextCalle = findViewById(R.id.editTextCalle2);
+        editTextPiso = findViewById(R.id.editTextPiso2);
+        editTextNumero = findViewById(R.id.editTextNumero2);
         editTextPuerta = findViewById(R.id.editTextPuerta2);
-        editTextCodigo =  findViewById(R.id.editTextCodigo2);
-        editTextCiudad =  findViewById(R.id.editTextCiudad2);
+        editTextCodigo = findViewById(R.id.editTextCodigo2);
+        editTextCiudad = findViewById(R.id.editTextCiudad2);
         imageViewimg2 = (ImageView) findViewById(R.id.imageViewimg2);
         imageViewimg2.setEnabled(false);
-        spinnerProvincia =  findViewById(R.id.spinnerProvincia3);
+        spinnerProvincia = findViewById(R.id.spinnerProvincia3);
         spinnerProvincia.setEnabled(false);
 
-        list_telefono = (NonScrollListView ) findViewById(R.id.list_telefono2);
+        list_telefono = (NonScrollListView) findViewById(R.id.list_telefono2);
         list_telefono.setEnabled(false);
 
 
@@ -93,13 +108,11 @@ public class Ver extends AppCompatActivity {
         list_correo.setEnabled(false);
 
 
-
         list_Notas = (NonScrollListView) findViewById(R.id.list_notas2);
         list_Notas.setEnabled(false);
 
         buttonEditar = (Button) findViewById(R.id.buttonEditar);
         buttonEditar.setOnClickListener(new openEditarMode());
-
 
 
         buttonLlamar = findViewById(R.id.buttonLlamar);
@@ -116,18 +129,18 @@ public class Ver extends AppCompatActivity {
         buttonEliminar.setOnClickListener(new eliminarContacto());
 
 
-        //Apartado edicion
-        Bundle bundle=getIntent().getExtras();
+        cargarMapa();
 
-        if(bundle != null) {
+
+        //Apartado edicion
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
             String dato1 = bundle.getString("ID");
             id = dato1;
             llenarCamposEditar();
         }
 
     }
-
-
 
 
     private class abrirMenu implements View.OnClickListener {
@@ -139,9 +152,8 @@ public class Ver extends AppCompatActivity {
 
     }
 
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
-    {
-        if(v.getId() == R.id.buttonLlamar) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.buttonLlamar) {
 
             int tamaño = telefonos.size();
             for (int i = 0; i < tamaño; i++) {
@@ -149,16 +161,16 @@ public class Ver extends AppCompatActivity {
             }
             menu.setHeaderTitle("Llamar a:");
 
-        }else if(v.getId() == R.id.buttonMandarCorreo){
+        } else if (v.getId() == R.id.buttonMandarCorreo) {
             int tamaño = emails.size();
+            int a = 3;
             for (int i = 0; i < tamaño; i++) {
-                int a = 3;
                 menu.add(1, a, a, emails.get(i));
                 a++;
             }
             menu.setHeaderTitle("Enviar email a:");
         }
-}
+    }
 
     public boolean onContextItemSelected(MenuItem item) {
 
@@ -176,27 +188,30 @@ public class Ver extends AppCompatActivity {
                 sendEmail(emails.get(0));
                 return true;
             case 4:
-                llamar(emails.get(1));
+                sendEmail(emails.get(1));
                 return true;
             case 5:
                 sendEmail(emails.get(2));
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
 
     }
-    private void llamar(String telefono){
+
+    private void llamar(String telefono) {
 
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", telefono, null)));
 
     }
-    private void sendEmail(String email){
+
+    private void sendEmail(String email) {
 
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
         i.putExtra(Intent.EXTRA_SUBJECT, "Asunto..");
-        i.putExtra(Intent.EXTRA_TEXT   , "Ejemplo de cuerpo de texto");
+        i.putExtra(Intent.EXTRA_TEXT, "Ejemplo de cuerpo de texto");
         try {
             startActivity(Intent.createChooser(i, "Elige la app para enviar..."));
         } catch (android.content.ActivityNotFoundException ex) {
@@ -206,8 +221,7 @@ public class Ver extends AppCompatActivity {
     }
 
 
-
-    private void llenarCamposEditar(){
+    private void llenarCamposEditar() {
 
         con = dbe.getContactoWithID(id);
         editTextNombre2.setText(con.getNombre());
@@ -225,7 +239,7 @@ public class Ver extends AppCompatActivity {
         editTextNumero.setText(dir.getNumero());
         List<String> list = new ArrayList<String>();
         list.add(dir.getProvincia());
-        adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
+        adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
         spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
 
@@ -234,14 +248,13 @@ public class Ver extends AppCompatActivity {
         list_telefono.setAdapter(at);
 
         emails = dbe.getCorreoWithID(id);
-        arrayAdapterCorreo = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, emails);
+        arrayAdapterCorreo = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, emails);
         list_correo.setAdapter(arrayAdapterCorreo);
 
         notas = dbe.getNotasWithID(id);
-        arrayAdapterNotas = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, notas);
+        arrayAdapterNotas = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, notas);
         list_Notas.setAdapter(arrayAdapterNotas);
     }
-
 
 
     private class openEditarMode implements View.OnClickListener {
@@ -250,7 +263,7 @@ public class Ver extends AppCompatActivity {
         public void onClick(View v) {
 
             //Paso los objetos a la clase añadir y ahi relleno los campos con ellos
-            Intent i = new Intent(Ver.this, Anadir.class );
+            Intent i = new Intent(Ver.this, Anadir.class);
             i.putExtra("CONTACTO", con);
             i.putExtra("DIRECCION", dir);
             i.putExtra("NOTA", notas);
@@ -291,5 +304,51 @@ public class Ver extends AppCompatActivity {
 
         }
     }
+
+    private void cargarMapa() {
+        SupportMapFragment mapaFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
+        // Le decimos que el mapa se cargue con esta actividad
+        mapaFrag.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mapa = googleMap;
+        personalizarPropiedades(); //Modificamos alguna propiedad del mapa
+    }
+
+
+    public void personalizarPropiedades() {
+        // Mostramos controles zoom sobre el mapa
+        mapa.getUiSettings().setZoomControlsEnabled(true);
+
+
+        String address = dir.getNumero() + " " + dir.getCalle()+ " " + dir.getCiudad() + " " + dir.getProvincia()+ " "  + dir.getCodigoPostal();
+
+        Geocoder geoCoder = new Geocoder(this);
+        double lat=0;
+        double lng = 0;
+        try {
+            List<Address> addressList = geoCoder.getFromLocationName(address, 1);
+            if (addressList != null && addressList.size() > 0) {
+                 lat = addressList.get(0).getLatitude();
+                 lng = addressList.get(0).getLongitude();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LatLng dir = new LatLng(lat, lng);
+        mapa.setMinZoomPreference(20);
+
+        mapa.moveCamera(CameraUpdateFactory.newLatLng(dir));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(dir);
+        mapa.addMarker(markerOptions);
+
+
+    }
+
 
 }
