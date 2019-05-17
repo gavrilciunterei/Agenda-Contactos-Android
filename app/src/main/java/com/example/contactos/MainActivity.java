@@ -1,23 +1,12 @@
 package com.example.contactos;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -26,14 +15,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
-    private Button buttonAnadir;
     private ListView listView;
     private DataBaseExecute dbe;
-    private EditText editTextBuscarContacto;
-    private Adaptador_Home adaptador_home;
     private SearchView searchView;
-    private String mQuery;
-
     private ArrayList<Contacto> contacto;
 
 
@@ -46,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
         dbe = new DataBaseExecute(this);
 
-        buttonAnadir = (Button)findViewById(R.id.buttonAnadir);
+        Button buttonAnadir = findViewById(R.id.buttonAnadir);
         buttonAnadir.setOnClickListener(new newAnadir());
 
 
-        this.listView = (ListView) findViewById(R.id.lsvContactos);
+        this.listView = findViewById(R.id.lsvContactos);
         contacto = dbe.getContacto();
-        adaptador_home = new Adaptador_Home(this, contacto);
+        Adaptador_Home adaptador_home = new Adaptador_Home(this, contacto);
         this.listView.setAdapter(adaptador_home);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -63,13 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent i = new Intent(MainActivity.this, Ver.class );
                 i.putExtra("ID", idd);
-
                 startActivity(i);
 
             }
         });
 
-        searchView =(SearchView) findViewById(R.id.searchView);
+        searchView =findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -90,16 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.setQuery(mQuery, false);
-            }
-        });
+
 
         setupSearchView();
-
-
+        dbe.close();
     }
 
 
@@ -135,20 +112,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkPermission() {
 
-        if(!Permisos.Check_FINE_LOCATION(MainActivity.this))
-        {
+        if(!Permisos.Check_FINE_LOCATION(MainActivity.this)){
             Permisos.Request_FINE_LOCATION(MainActivity.this,1);
         }
-        if(!Permisos.Check_CALL_PHONE(MainActivity.this))
-        {
+        if(!Permisos.Check_CALL_PHONE(MainActivity.this)){
             Permisos.Request_CALL_PHONE(MainActivity.this,2);
         }
-        if(!Permisos.Check_READ_EXTERNAL_STORAGE(MainActivity.this))
-        {
+        if(!Permisos.Check_READ_EXTERNAL_STORAGE(MainActivity.this)) {
             Permisos.Request_READ_EXTERNAL_STORAGE(MainActivity.this,3);
         }
-        if(!Permisos.Check_INTERNET(MainActivity.this))
-        {
+        if(!Permisos.Check_INTERNET(MainActivity.this)) {
             Permisos.Request_INTERNET(MainActivity.this,4);
         }
     }

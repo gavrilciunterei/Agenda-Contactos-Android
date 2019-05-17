@@ -1,39 +1,30 @@
 package com.example.contactos;
 
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,26 +36,19 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
     private TextView editTextNombre2, editTextApodo2, editTextEmpresa2;
     private TextView editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
     private ImageView imageViewimg2;
-    private Spinner spinnerTipo, spinnerProvincia;
-    private long backPressedTime;
-    private ArrayAdapter<String> adapterSpinner, adapterSpinnerPronvincia;
+    private Spinner spinnerProvincia;
 
-
-    private Button buttonEditar;
 
     //listviews dinamicos telefonos
     private NonScrollListView list_telefono;
-    private Adaptador_Telefono at;
 
 
     //listviw correo
     private NonScrollListView list_correo;
-    private ArrayAdapter<String> arrayAdapterCorreo;
 
 
     //listviw notas
     private NonScrollListView list_Notas;
-    private ArrayAdapter<String> arrayAdapterNotas;
 
     //Expxortar para Editar
     private Contacto con;
@@ -72,9 +56,6 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
     private ArrayList<String> emails;
     private ArrayList<String> notas;
     private ArrayList<Telefono> telefonos;
-
-    private Button buttonLlamar, buttonMandarCorreo, buttonEliminar;
-
 
     private GoogleMap mapa;
 
@@ -95,37 +76,37 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         editTextPuerta = findViewById(R.id.editTextPuerta2);
         editTextCodigo = findViewById(R.id.editTextCodigo2);
         editTextCiudad = findViewById(R.id.editTextCiudad2);
-        imageViewimg2 = (ImageView) findViewById(R.id.imageViewimg2);
+        imageViewimg2 =  findViewById(R.id.imageViewimg2);
         imageViewimg2.setEnabled(false);
         spinnerProvincia = findViewById(R.id.spinnerProvincia3);
         spinnerProvincia.setEnabled(false);
 
-        list_telefono = (NonScrollListView) findViewById(R.id.list_telefono2);
+        list_telefono = findViewById(R.id.list_telefono2);
         list_telefono.setEnabled(false);
 
 
-        list_correo = (NonScrollListView) findViewById(R.id.list_correo2);
+        list_correo = findViewById(R.id.list_correo2);
         list_correo.setEnabled(false);
 
 
-        list_Notas = (NonScrollListView) findViewById(R.id.list_notas2);
+        list_Notas = findViewById(R.id.list_notas2);
         list_Notas.setEnabled(false);
 
-        buttonEditar = (Button) findViewById(R.id.buttonEditar);
+        Button buttonEditar = findViewById(R.id.buttonEditar);
         buttonEditar.setOnClickListener(new openEditarMode());
 
 
-        buttonLlamar = findViewById(R.id.buttonLlamar);
+        Button buttonLlamar = findViewById(R.id.buttonLlamar);
         buttonLlamar.setOnClickListener(new abrirMenu());
         registerForContextMenu(buttonLlamar);
 
 
-        buttonMandarCorreo = findViewById(R.id.buttonMandarCorreo);
+        Button buttonMandarCorreo = findViewById(R.id.buttonMandarCorreo);
         buttonMandarCorreo.setOnClickListener(new abrirMenu());
         registerForContextMenu(buttonMandarCorreo);
 
 
-        buttonEliminar = findViewById(R.id.buttonEliminar);
+        Button buttonEliminar = findViewById(R.id.buttonEliminar);
         buttonEliminar.setOnClickListener(new eliminarContacto());
 
 
@@ -135,8 +116,8 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         //Apartado edicion
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String dato1 = bundle.getString("ID");
-            id = dato1;
+
+            id = bundle.getString("ID");
             llenarCamposEditar();
         }
 
@@ -155,16 +136,16 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.buttonLlamar) {
 
-            int tamaño = telefonos.size();
-            for (int i = 0; i < tamaño; i++) {
+            int tamano = telefonos.size();
+            for (int i = 0; i < tamano; i++) {
                 menu.add(1, i, i, telefonos.get(i).getTelefono());
             }
             menu.setHeaderTitle("Llamar a:");
 
         } else if (v.getId() == R.id.buttonMandarCorreo) {
-            int tamaño = emails.size();
+            int tamano = emails.size();
             int a = 3;
-            for (int i = 0; i < tamaño; i++) {
+            for (int i = 0; i < tamano; i++) {
                 menu.add(1, a, a, emails.get(i));
                 a++;
             }
@@ -237,22 +218,25 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         editTextPiso.setText(dir.getPiso());
         editTextPuerta.setText(dir.getPuerta());
         editTextNumero.setText(dir.getNumero());
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add(dir.getProvincia());
-        adapterSpinnerPronvincia = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> adapterSpinnerPronvincia;
+        adapterSpinnerPronvincia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
 
-        telefonos = dbe.getTelefonoWithID(id);
-        at = new Adaptador_Telefono(this, telefonos);
+        telefonos = dbe.getTelWithID(id);
+        Adaptador_Telefono at = new Adaptador_Telefono(this, telefonos);
         list_telefono.setAdapter(at);
 
         emails = dbe.getCorreoWithID(id);
-        arrayAdapterCorreo = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, emails);
+        ArrayAdapter<String> arrayAdapterCorreo;
+        arrayAdapterCorreo = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emails);
         list_correo.setAdapter(arrayAdapterCorreo);
 
         notas = dbe.getNotasWithID(id);
-        arrayAdapterNotas = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, notas);
+        ArrayAdapter<String> arrayAdapterNotas;
+        arrayAdapterNotas = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notas);
         list_Notas.setAdapter(arrayAdapterNotas);
     }
 
@@ -308,6 +292,7 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
     private void cargarMapa() {
         SupportMapFragment mapaFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
         // Le decimos que el mapa se cargue con esta actividad
+        assert mapaFrag != null;
         mapaFrag.getMapAsync(this);
 
     }
@@ -340,7 +325,7 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         }
 
         LatLng dir = new LatLng(lat, lng);
-        mapa.setMinZoomPreference(20);
+        mapa.setMinZoomPreference(16);
 
         mapa.moveCamera(CameraUpdateFactory.newLatLng(dir));
         MarkerOptions markerOptions = new MarkerOptions();

@@ -4,34 +4,30 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 
-public class DataBaseExecute {
+class DataBaseExecute {
 
-    private SQLiteDatabase db=null;
+    private SQLiteDatabase db;
     private DataBaseHelper usdbh;
 
 
 
-    public DataBaseExecute(Context con){
+    DataBaseExecute(Context con){
         usdbh = new DataBaseHelper(con);
-
+        db = null;
 
     }
 
-     public boolean anadirContacto(ContentValues nuevoRegistro, String tabla){
+     void anadirContacto(ContentValues nuevoRegistro, String tabla){
         db= usdbh.getWritableDatabase();
-        if(db.insert(tabla, null, nuevoRegistro) != 0){
-            return true;
-        }
-        return false;
-    }
+        db.insert(tabla, null, nuevoRegistro);
+     }
 
 
 
-    public int getLastId() {
+    int getLastId() {
 
         String sql = "SELECT MAX(ID) FROM CONTACTO";
         db = usdbh.getReadableDatabase();
@@ -49,7 +45,7 @@ public class DataBaseExecute {
 
     //EDITAR
 
-    public Contacto getContactoWithID(String id) {
+     Contacto getContactoWithID(String id) {
 
         String sql = "SELECT * FROM CONTACTO WHERE ID = ?";
         Contacto con = null;
@@ -75,7 +71,7 @@ public class DataBaseExecute {
     }
 
 
-    public Direccion getDireccionWithID(String id) {
+     Direccion getDireccionWithID(String id) {
 
         String sql = "SELECT * FROM DIRECCION WHERE ID = ?";
         Direccion dir = null;
@@ -101,9 +97,9 @@ public class DataBaseExecute {
     }
 
 
-    public ArrayList<Telefono> getTelefonoWithID(String id) {
+     ArrayList<Telefono> getTelWithID(String id) {
         ArrayList<Telefono> telefonos = new ArrayList<>();
-        Telefono telefono = null;
+        Telefono telefono;
 
         String sql = "SELECT * FROM TELEFONO WHERE ID = ?";
         try {
@@ -128,7 +124,8 @@ public class DataBaseExecute {
 
     }
 
-    public ArrayList<String> getCorreoWithID(String id) {
+
+     ArrayList<String> getCorreoWithID(String id) {
         ArrayList<String> emails = new ArrayList<>();
 
         String sql = "SELECT * FROM EMAIL WHERE ID = ?";
@@ -153,7 +150,7 @@ public class DataBaseExecute {
 
     }
 
-    public ArrayList<String> getNotasWithID(String id) {
+     ArrayList<String> getNotasWithID(String id) {
         ArrayList<String> notas = new ArrayList<>();
 
         String sql = "SELECT * FROM NOTAS WHERE ID = ?";
@@ -179,12 +176,13 @@ public class DataBaseExecute {
     }
 
 
-    public ArrayList<Contacto> getContactoByName(String name) {
+     ArrayList<Contacto> getContactoByName(String name) {
         ArrayList<Contacto> contacto = new ArrayList<>();
 
 
         db = usdbh.getReadableDatabase();
-        Cursor c = db.query("CONTACTO", new String[] {"*"},"NOMBRE"+" LIKE '"+name+"%'", null, null, null, null);
+        Cursor c;
+        c = db.query("CONTACTO", new String[] {"*"},"NOMBRE"+" LIKE '"+name+"%'", null, null, null, null);
 
         while (c.moveToNext()){
             Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
@@ -194,12 +192,13 @@ public class DataBaseExecute {
         return contacto;
     }
 
-    public ArrayList<Contacto> getContacto() {
+     ArrayList<Contacto> getContacto() {
         ArrayList<Contacto> contacto = new ArrayList<>();
 
         String sql = "SELECT * FROM CONTACTO ORDER BY NOMBRE ASC";
         db = usdbh.getReadableDatabase();
-        Cursor c = db.rawQuery(sql, null);
+        Cursor c;
+        c= db.rawQuery(sql, null);
 
         while (c.moveToNext()){
             Contacto con = new Contacto(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getBlob(4));
@@ -209,25 +208,21 @@ public class DataBaseExecute {
         return contacto;
     }
 
-    public boolean editarContacto(ContentValues nuevoRegistro, String tabla, String id) {
+     void editarContacto(ContentValues nuevoRegistro, String tabla, String id) {
 
         db= usdbh.getWritableDatabase();
-        if(db.update(tabla, nuevoRegistro, "ID=?", new String[] {  id}) != 0){
-            return true;
-        }
-        return false;
-    }
+        db.update(tabla, nuevoRegistro, "ID=?", new String[]{id});
+     }
 
-    public boolean borrarPorID(String id, String tabla){
+     void borrarPorID(String id, String tabla){
+
         db= usdbh.getWritableDatabase();
-
         db.delete(tabla, "ID=?",new String[] {id });
 
-        return false;
-    }
+     }
 
 
-    public void close(){
+     void close(){
 
         db.close();
         usdbh.close();
