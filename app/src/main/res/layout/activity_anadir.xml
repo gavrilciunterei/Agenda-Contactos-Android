@@ -52,7 +52,7 @@
                         android:text="Añadir foto" />
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/buttonBorrarFoto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Borrar foto" />

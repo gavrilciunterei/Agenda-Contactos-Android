@@ -26,7 +26,6 @@ public class Anadir extends AppCompatActivity {
     private final String []opciones={"FIJO","MOVIL"};
     private DataBaseExecute dbe;
 
-
     private EditText editTextNombre, editTextApodo, editTextEmpresa, editTextTelefono, editTextEmail, editTextNotas;
     private EditText editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
     private ImageView imageViewimg;
@@ -55,8 +54,9 @@ public class Anadir extends AppCompatActivity {
     private ArrayList<Telefono> telefonosV;
 
     private Provincias provincias;
-
-
+    private String picturePath;
+    private byte[] bytes;
+    private boolean imagenSeteada = false;
 
 
     @Override
@@ -85,6 +85,8 @@ public class Anadir extends AppCompatActivity {
         Button buttonAbrirGaleria = findViewById(R.id.buttonAbrirGaleria);
         buttonAbrirGaleria.setOnClickListener(new abrirGaleria());
 
+        Button buttonBorrarFoto = findViewById(R.id.buttonBorrarFoto);
+        buttonBorrarFoto.setOnClickListener(new resetIMG());
 
 
         spinnerTipo = findViewById(R.id.spinnerTipo);
@@ -190,7 +192,7 @@ public class Anadir extends AppCompatActivity {
         editTextApodo.setText(con.getApodo());
         editTextEmpresa.setText(con.getEmpresa());
 
-        byte[] bytes = con.getImg();
+        bytes = con.getImg();
         imageViewimg.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
         Direccion dir = dirV;
 
@@ -266,6 +268,18 @@ public class Anadir extends AppCompatActivity {
 
 
 
+    private class resetIMG implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            imageViewimg.setImageBitmap(null);
+            picturePath = null;
+            setImage();
+        }
+    }
+
+
+
     private class abrirGaleria implements View.OnClickListener {
 
         @Override
@@ -284,30 +298,47 @@ public class Anadir extends AppCompatActivity {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            assert selectedImage != null;
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
-            assert cursor != null;
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            picturePath = cursor.getString(columnIndex);
             cursor.close();
+            setImage();
 
-            imageViewimg.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
         }
     }
+    private void setImage(){
+        imagenSeteada = false;
+        if(picturePath == null && !editTextNombre.getText().toString().isEmpty()){
+            imagenSeteada = true;
+            String initials = String.valueOf(editTextNombre.getText().toString().charAt(0));
+            imageViewimg.setImageBitmap(PictureUtils.generateCircleBitmap(initials));
+        }
+        else if(picturePath != null && !imagenSeteada){
+            imagenSeteada = true;
+            imageViewimg.setImageBitmap(PictureUtils.getCircularBitmap(picturePath));
+        }
+        else if(editTextNombre.getText().toString().isEmpty() &&  !imagenSeteada){
+            imagenSeteada = true;
+            imageViewimg.setImageBitmap(PictureUtils.generateCircleBitmap(""));
+        }
 
-    private byte[] devolverImagen(){
 
 
-            BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
+    }
+
+    private byte[] devolverByteImagen(){
+
+        ByteArrayOutputStream baos;
+        BitmapDrawable drawable = (BitmapDrawable) imageViewimg.getDrawable();
         Bitmap bmp = drawable.getBitmap();
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
-            bmp.compress(Bitmap.CompressFormat.PNG, 0, baos);
+        baos = new ByteArrayOutputStream(20480);
+        bmp.compress(Bitmap.CompressFormat.PNG, 0, baos);
         return baos.toByteArray();
+
 
     }
 
@@ -318,9 +349,13 @@ public class Anadir extends AppCompatActivity {
 
             int maxid = dbe.getLastId();
 
+            setImage();
+
+            bytes = devolverByteImagen();
+
 
             ContentValues nuevoRegistroContacto = new ContentValues();
-            Contacto contacto = new Contacto(maxid, editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), devolverImagen());
+            Contacto contacto = new Contacto(maxid, editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), bytes);
             nuevoRegistroContacto.put("ID", contacto.getId());
             nuevoRegistroContacto.put("NOMBRE", contacto.getNombre());
             nuevoRegistroContacto.put("APODO", contacto.getApodo());
@@ -375,6 +410,7 @@ public class Anadir extends AppCompatActivity {
 
 
             mensajeNormalContacto();
+            finish();
 
 
         }
@@ -385,7 +421,7 @@ public class Anadir extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            Contacto contactoNuevo = new Contacto(conV.getId(), editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), devolverImagen());
+            Contacto contactoNuevo = new Contacto(conV.getId(), editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), devolverByteImagen());
             String idEdit = Integer.toString(contactoNuevo.getId());
 
             if(contactoNuevo.compareTo(conV) != 0){
