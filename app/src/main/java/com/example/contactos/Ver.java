@@ -34,7 +34,7 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
     private String id;
 
     private TextView editTextNombre2, editTextApodo2, editTextEmpresa2;
-    private TextView editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad;
+    private TextView editTextCalle, editTextPiso, editTextNumero, editTextPuerta, editTextCodigo, editTextCiudad, textViewDirCompleta;
     private ImageView imageViewimg2;
     private Spinner spinnerProvincia;
 
@@ -70,16 +70,11 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         editTextNombre2 = findViewById(R.id.editTextNombre2);
         editTextApodo2 = findViewById(R.id.editTextApodo2);
         editTextEmpresa2 = findViewById(R.id.editTextEmpresa2);
-        editTextCalle = findViewById(R.id.editTextCalle2);
-        editTextPiso = findViewById(R.id.editTextPiso2);
-        editTextNumero = findViewById(R.id.editTextNumero2);
-        editTextPuerta = findViewById(R.id.editTextPuerta2);
-        editTextCodigo = findViewById(R.id.editTextCodigo2);
-        editTextCiudad = findViewById(R.id.editTextCiudad2);
+
+
         imageViewimg2 =  findViewById(R.id.imageViewimg2);
         imageViewimg2.setEnabled(false);
-        spinnerProvincia = findViewById(R.id.spinnerProvincia3);
-        spinnerProvincia.setEnabled(false);
+
 
         list_telefono = findViewById(R.id.list_telefono2);
         list_telefono.setEnabled(false);
@@ -110,6 +105,7 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         buttonEliminar.setOnClickListener(new eliminarContacto());
 
 
+        textViewDirCompleta = findViewById(R.id.textViewDirCompleta);
 
         //Apartado edicion
         Bundle bundle = getIntent().getExtras();
@@ -197,12 +193,12 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Asunto..");
-        i.putExtra(Intent.EXTRA_TEXT, "Ejemplo de cuerpo de texto");
+        i.putExtra(Intent.EXTRA_SUBJECT, "Asunto...");
+        i.putExtra(Intent.EXTRA_TEXT, "Hola contacto...");
         try {
             startActivity(Intent.createChooser(i, "Elige la app para enviar..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(Ver.this, "No hay clientes de correo instalados.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Ver.this, "No hay clientes de correo instalados", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -233,17 +229,6 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         imageViewimg2.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 
         dir = dbe.getDireccionWithID(id);
-        editTextCiudad.setText(dir.getCiudad());
-        editTextCalle.setText(dir.getCalle());
-        editTextCodigo.setText(dir.getCodigoPostal());
-        editTextPiso.setText(dir.getPiso());
-        editTextPuerta.setText(dir.getPuerta());
-        editTextNumero.setText(dir.getNumero());
-        List<String> list = new ArrayList<>();
-        list.add(dir.getProvincia());
-        ArrayAdapter<String> adapterSpinnerPronvincia;
-        adapterSpinnerPronvincia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
-        spinnerProvincia.setAdapter(adapterSpinnerPronvincia);
 
 
         telefonos = dbe.getTelWithID(id);
@@ -259,6 +244,12 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         ArrayAdapter<String> arrayAdapterNotas;
         arrayAdapterNotas = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notas);
         list_Notas.setAdapter(arrayAdapterNotas);
+
+        textViewDirCompleta.setText(dir.getCalle()+ " " + dir.getNumero() + " " + dir.getPiso() + " " + dir.getPuerta()+ " " +dir.getCiudad() +" "+ dir.getProvincia()+" "+ dir.getCodigoPostal());
+
+
+
+
 
         cargarMapa();
 
