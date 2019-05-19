@@ -60,10 +60,46 @@
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:background="@null" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/editTextEmpresa2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="4"
+                    android:fontFamily="@font/mr"
+                    android:hint="@string/empresa"
+                    android:inputType="textPersonName"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/editTextNombre2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="4"
+                    android:fontFamily="@font/mr"
+                    android:hint="@string/nombre"
+                    android:inputType="textPersonName"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/editTextApodo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:ems="4"
+                    android:fontFamily="@font/mr"
+                    android:hint="@string/apodo"
+                    android:inputType="textPersonName"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,120 +135,77 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="8dp"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:id="@+id/editTextNombre2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/nombre"
-                    android:inputType="textPersonName" />
-
-                <TextView
-                    android:id="@+id/editTextApodo2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/apodo"
-                    android:inputType="textPersonName" />
-
-                <TextView
-                    android:id="@+id/editTextEmpresa2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/empresa"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="#FFFFFF"
-                android:layout_marginRight="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_corner"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="7dp"
+                    >
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Telefonos:"
+                        android:fontFamily="@font/mr"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <com.example.contactos.NonScrollListView
                         android:id="@+id/list_telefono2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp">
+                        android:layout_height="wrap_content">
 
                     </com.example.contactos.NonScrollListView>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp">
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_corner"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="7dp">
 
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Email:"
+                        android:fontFamily="@font/mr"
                         android:textStyle="bold"
                         android:textSize="16sp"/>
 
                     <com.example.contactos.NonScrollListView
                         android:id="@+id/list_correo2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp" />
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                >
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_corner"
+                    android:layout_marginRight="8dp"
+                   android:layout_marginTop="7dp"
+              >
 
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Notas:"
+                        android:fontFamily="@font/mr"
                         android:textStyle="bold"
                         android:textSize="16sp"/>
 
@@ -226,24 +219,39 @@
                 </LinearLayout>
 
 
-            </android.support.v7.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_corner"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="7dp">
 
             <include layout="@layout/diseno_direccion_ver" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
             <fragment
                 android:id="@+id/mapa"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="15dp"
+            />
 
             <Button
                 android:id="@+id/buttonEliminar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="15dp"
                 android:background="@null"
                 android:text="@string/eliminar_contcto"
                 android:gravity="left|center_vertical"

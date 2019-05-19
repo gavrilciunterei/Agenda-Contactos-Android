@@ -211,9 +211,24 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
     private void llenarCamposEditar() {
 
         con = dbe.getContactoWithID(id);
-        editTextNombre2.setText(con.getNombre());
-        editTextApodo2.setText(con.getApodo());
-        editTextEmpresa2.setText(con.getEmpresa());
+        if(!con.getNombre().isEmpty()) {
+            editTextNombre2.setText(con.getNombre());
+            editTextNombre2.setVisibility(View.VISIBLE);
+        }else{
+            editTextNombre2.setVisibility(View.INVISIBLE);
+        }
+        if(!con.getApodo().isEmpty()) {
+             editTextApodo2.setText(con.getApodo());
+            editTextApodo2.setVisibility(View.VISIBLE);
+        }else{
+            editTextApodo2.setVisibility(View.INVISIBLE);
+        }
+        if(!con.getEmpresa().isEmpty()) {
+            editTextEmpresa2.setText(con.getEmpresa());
+            editTextEmpresa2.setVisibility(View.VISIBLE);
+        }else{
+            editTextEmpresa2.setVisibility(View.INVISIBLE);
+        }
         byte[] bytes = con.getImg();
         imageViewimg2.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 

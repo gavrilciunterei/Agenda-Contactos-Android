@@ -13,10 +13,10 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 
-public class PictureUtils {
+class Imagen {
 
 
-    public static Bitmap getScaledBitmap(String path, int destWidth, int destHeight) {
+     private static Bitmap getScaledBitmap(String path, int destWidth, int destHeight) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
@@ -36,12 +36,12 @@ public class PictureUtils {
     }
 
 
-    public static Bitmap getCircularBitmap(String filePath){
+     static Bitmap getCircularBitmap(String filePath){
 
-        Bitmap bitmap = getScaledBitmap(filePath, (int) (130*0.7), (int) (130*0.7));
+        Bitmap bitmap = getScaledBitmap(filePath, (int) (150*0.7), (int) (160*0.7));
 
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float diameterPixels = 40 * (metrics.densityDpi / 160f);
+        float diameterPixels = 30 * (metrics.densityDpi / 100f);
 
         Bitmap output = Bitmap.createBitmap((int) diameterPixels, (int) diameterPixels, Bitmap.Config.ARGB_8888);
 
@@ -70,14 +70,12 @@ public class PictureUtils {
 
 
 
-    public static Bitmap generateCircleBitmap(String text){
+     static Bitmap generateCircleBitmap(String text){
         final int textColor = 0xffffffff;
-      //  final int color = ContextCompat.getColor(, R.color.white);
-
 
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float diameterPixels = 40 * (metrics.densityDpi / 160f);
-        float radiusPixels = diameterPixels/2;
+        float diameterPixels = 30 * (metrics.densityDpi / 130f);
+        float radiusPixels = (float) (diameterPixels/2.3);
 
         Bitmap output = Bitmap.createBitmap((int) diameterPixels, (int) diameterPixels,
                 Bitmap.Config.ARGB_8888);
@@ -97,7 +95,7 @@ public class PictureUtils {
             final Paint paintT = new Paint();
             paintT.setColor(textColor);
             paintT.setAntiAlias(true);
-            paintT.setTextSize(radiusPixels * 2);
+            paintT.setTextSize(radiusPixels*2);
             Typeface typeFace = Typeface.defaultFromStyle(Typeface.BOLD);
             paintT.setTypeface(typeFace);
             final Rect textBounds = new Rect();

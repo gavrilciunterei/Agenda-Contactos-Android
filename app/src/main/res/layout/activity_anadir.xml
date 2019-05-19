@@ -43,20 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/buttonAbrirGaleria"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Añadir foto" />
-
-                    <Button
-                        android:id="@+id/buttonBorrarFoto"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Borrar foto" />
-                </LinearLayout>
+                    android:orientation="horizontal"/>
 
             </LinearLayout>
 
@@ -69,26 +56,41 @@
                 <EditText
                     android:id="@+id/editTextNombre"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rounded_corner"
+                    android:fontFamily="@font/mr"
                     android:hint="@string/nombre"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/editTextApodo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rounded_corner"
+                    android:fontFamily="@font/mr"
                     android:hint="@string/apodo"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="17sp" />
 
                 <EditText
                     android:id="@+id/editTextEmpresa"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rounded_corner"
+                    android:fontFamily="@font/mr"
                     android:hint="@string/empresa"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,16 +105,27 @@
                     android:id="@+id/spinnerTipo"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5" />
+                    android:layout_weight="5"
+
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rounded_corner"
+                    android:fontFamily="@font/mr"
+                    android:textSize="17sp"
+                    />
 
                 <EditText
                     android:id="@+id/editTextTelefono"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:ems="10"
                     android:hint="@string/telefono"
-                    android:inputType="textPersonName" />
+                    android:inputType="phone"
+                    android:layout_marginLeft="4dp"
+                    android:fontFamily="@font/mr"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rounded_corner"
+                    android:textSize="17sp"
+                    />
 
                 <Button
                     android:id="@+id/buttonAddTelefono"
@@ -129,7 +142,17 @@
                 android:id="@+id/list_telefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp">
+                android:layout_marginRight="8dp"
+
+
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/mr"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/rounded_corner"
+                android:textSize="17sp"
+
+                >
 
             </com.example.contactos.NonScrollListView>
 
@@ -145,9 +168,16 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:ems="10"
                     android:hint="@string/correo"
-                    android:inputType="textPersonName" />
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:fontFamily="@font/mr"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rounded_corner"
+                    android:textSize="17sp"
+
+                    />
 
                 <Button
                     android:id="@+id/buttonAddEmail"
@@ -164,7 +194,15 @@
                 android:id="@+id/list_correo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/mr"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/rounded_corner"
+                android:textSize="17sp"
+                />
 
             <LinearLayout
                 android:id="@+id/linear_notas_repeat"
@@ -178,9 +216,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:ems="10"
                     android:hint="@string/notas"
-                    android:inputType="textPersonName" />
+                    android:inputType="textLongMessage"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:fontFamily="@font/mr"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/rounded_corner"
+                    android:textSize="17sp"
+
+
+                    />
 
                 <Button
                     android:id="@+id/buttonAddNotas"
@@ -197,7 +243,14 @@
                 android:id="@+id/list_notas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp">
+                android:layout_marginRight="8dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/mr"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/rounded_corner"
+                android:textSize="17sp"
+                >
 
             </com.example.contactos.NonScrollListView>
 
@@ -207,9 +260,12 @@
                 android:id="@+id/buttonAnadir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
                 android:background="@null"
+                android:fontFamily="@font/mr"
                 android:text="@string/anadirContacto"
                 android:gravity="left|center_vertical"/>
 

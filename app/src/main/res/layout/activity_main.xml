@@ -67,7 +67,11 @@
                 android:scrollingCache="true"
                 android:smoothScrollbar="true"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="3dp" />
+                android:verticalSpacing="3dp"
+
+
+
+                />
 
         </LinearLayout>
 

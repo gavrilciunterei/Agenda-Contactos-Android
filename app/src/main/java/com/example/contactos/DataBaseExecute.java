@@ -40,9 +40,6 @@ class DataBaseExecute {
     }
 
 
-
-
-
     //EDITAR
 
      Contacto getContactoWithID(String id) {

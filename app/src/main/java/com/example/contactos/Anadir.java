@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,11 +84,7 @@ public class Anadir extends AppCompatActivity {
 
 
         imageViewimg =  findViewById(R.id.imageViewimg);
-        Button buttonAbrirGaleria = findViewById(R.id.buttonAbrirGaleria);
-        buttonAbrirGaleria.setOnClickListener(new abrirGaleria());
 
-        Button buttonBorrarFoto = findViewById(R.id.buttonBorrarFoto);
-        buttonBorrarFoto.setOnClickListener(new resetIMG());
 
 
         spinnerTipo = findViewById(R.id.spinnerTipo);
@@ -159,6 +157,12 @@ public class Anadir extends AppCompatActivity {
             }
         });
 
+        registerForContextMenu(imageViewimg);
+        imageViewimg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               new abrirMenu();
+            }
+        });
 
         //Apartado edicion
         Bundle bundle=getIntent().getExtras();
@@ -184,6 +188,43 @@ public class Anadir extends AppCompatActivity {
 
 
     }
+
+
+    private class abrirMenu implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            openContextMenu(v);
+        }
+
+    }
+
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+
+            menu.add(1, 0, 0, "Seleccionar una imagen");
+            menu.add(1, 1, 1,   "Eliminar una imagen");
+            menu.setHeaderTitle("Editar imagen...");
+
+
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case 0:
+                 abrirGaleria();
+                return true;
+            case 1:
+                resetIMG();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
 
     private void llenarCamposEditar(){
 
@@ -228,6 +269,7 @@ public class Anadir extends AppCompatActivity {
                     Telefono t = new Telefono(editTextTelefono.getText().toString(), spinnerTipo.getSelectedItem().toString());
                     arrayListTelefonos.add(t);
                     at.notifyDataSetChanged();
+                    editTextTelefono.setText(null);
                 }
             }else{
                 maxCamp();
@@ -244,6 +286,7 @@ public class Anadir extends AppCompatActivity {
 
                     arrayListCorreo.add(editTextEmail.getText().toString());
                     arrayAdapterCorreo.notifyDataSetChanged();
+                    editTextEmail.setText(null);
                 }
             }else{
                 maxCamp();
@@ -259,6 +302,7 @@ public class Anadir extends AppCompatActivity {
 
                     arrayListNotas.add(editTextNotas.getText().toString());
                     arrayAdapterNotas.notifyDataSetChanged();
+                    editTextNotas.setText(null);
                 }
             }else{
                 maxCamp();
@@ -268,28 +312,25 @@ public class Anadir extends AppCompatActivity {
 
 
 
-    private class resetIMG implements View.OnClickListener {
+    private void resetIMG (){
 
-        @Override
-        public void onClick(View view) {
+
             imageViewimg.setImageBitmap(null);
             picturePath = null;
             setImage();
-        }
+
     }
 
 
+   private void abrirGaleria  (){
 
-    private class abrirGaleria implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
             Intent ii = new Intent(Intent.ACTION_PICK) ;
             ii.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     MediaStore.Images.Media.CONTENT_TYPE) ;
             startActivityForResult(ii,REQUEST_SELECT_PHOTO) ;
-        }
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -315,15 +356,15 @@ public class Anadir extends AppCompatActivity {
         if(picturePath == null && !editTextNombre.getText().toString().isEmpty()){
             imagenSeteada = true;
             String initials = String.valueOf(editTextNombre.getText().toString().charAt(0));
-            imageViewimg.setImageBitmap(PictureUtils.generateCircleBitmap(initials));
+            imageViewimg.setImageBitmap(Imagen.generateCircleBitmap(initials));
         }
         else if(picturePath != null && !imagenSeteada){
             imagenSeteada = true;
-            imageViewimg.setImageBitmap(PictureUtils.getCircularBitmap(picturePath));
+            imageViewimg.setImageBitmap(Imagen.getCircularBitmap(picturePath));
         }
         else if(editTextNombre.getText().toString().isEmpty() &&  !imagenSeteada){
             imagenSeteada = true;
-            imageViewimg.setImageBitmap(PictureUtils.generateCircleBitmap(""));
+            imageViewimg.setImageBitmap(Imagen.generateCircleBitmap(""));
         }
 
 
