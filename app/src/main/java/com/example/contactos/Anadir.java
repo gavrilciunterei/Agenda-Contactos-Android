@@ -356,15 +356,15 @@ public class Anadir extends AppCompatActivity {
         if(picturePath == null && !editTextNombre.getText().toString().isEmpty()){
             imagenSeteada = true;
             String initials = String.valueOf(editTextNombre.getText().toString().charAt(0));
-            imageViewimg.setImageBitmap(Imagen.generateCircleBitmap(initials));
+            imageViewimg.setImageBitmap(Imagen.getBitmapCircularString(initials));
         }
         else if(picturePath != null && !imagenSeteada){
             imagenSeteada = true;
-            imageViewimg.setImageBitmap(Imagen.getCircularBitmap(picturePath));
+            imageViewimg.setImageBitmap(Imagen.getBitmapCirculrFoto(picturePath));
         }
         else if(editTextNombre.getText().toString().isEmpty() &&  !imagenSeteada){
             imagenSeteada = true;
-            imageViewimg.setImageBitmap(Imagen.generateCircleBitmap(""));
+            imageViewimg.setImageBitmap(Imagen.getBitmapCircularString(""));
         }
 
 
@@ -390,69 +390,71 @@ public class Anadir extends AppCompatActivity {
 
             int maxid = dbe.getLastId();
 
-            setImage();
+            if(!editTextNombre.getText().toString().isEmpty() || !editTextApodo.getText().toString().isEmpty() || !editTextEmpresa.getText().toString().isEmpty()) {
+                setImage();
 
-            bytes = devolverByteImagen();
-
-
-            ContentValues nuevoRegistroContacto = new ContentValues();
-            Contacto contacto = new Contacto(maxid, editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), bytes);
-            nuevoRegistroContacto.put("ID", contacto.getId());
-            nuevoRegistroContacto.put("NOMBRE", contacto.getNombre());
-            nuevoRegistroContacto.put("APODO", contacto.getApodo());
-            nuevoRegistroContacto.put("EMPRESA", contacto.getEmpresa());
-            nuevoRegistroContacto.put("IMG", contacto.getImg());
-            dbe.anadirContacto(nuevoRegistroContacto, "CONTACTO");
+                bytes = devolverByteImagen();
 
 
+                ContentValues nuevoRegistroContacto = new ContentValues();
+                Contacto contacto = new Contacto(maxid, editTextNombre.getText().toString(), editTextApodo.getText().toString(), editTextEmpresa.getText().toString(), bytes);
+                nuevoRegistroContacto.put("ID", contacto.getId());
+                nuevoRegistroContacto.put("NOMBRE", contacto.getNombre());
+                nuevoRegistroContacto.put("APODO", contacto.getApodo());
+                nuevoRegistroContacto.put("EMPRESA", contacto.getEmpresa());
+                nuevoRegistroContacto.put("IMG", contacto.getImg());
+                dbe.anadirContacto(nuevoRegistroContacto, "CONTACTO");
 
-            for(int i = 0; i < arrayListCorreo.size(); i++) {
 
-                ContentValues nuevoRegistroEmail = new ContentValues();
-                nuevoRegistroEmail.put("ID", maxid);
-                nuevoRegistroEmail.put("EMAIL", arrayListCorreo.get(i));
-                dbe.anadirContacto(nuevoRegistroEmail, "EMAIL");
+                for (int i = 0; i < arrayListCorreo.size(); i++) {
 
+                    ContentValues nuevoRegistroEmail = new ContentValues();
+                    nuevoRegistroEmail.put("ID", maxid);
+                    nuevoRegistroEmail.put("EMAIL", arrayListCorreo.get(i));
+                    dbe.anadirContacto(nuevoRegistroEmail, "EMAIL");
+
+                }
+
+                for (int i = 0; i < arrayListNotas.size(); i++) {
+                    ContentValues nuevoRegistroNotas = new ContentValues();
+                    nuevoRegistroNotas.put("ID", maxid);
+                    nuevoRegistroNotas.put("NOTA", arrayListNotas.get(i));
+                    dbe.anadirContacto(nuevoRegistroNotas, "NOTAS");
+                }
+
+                for (int i = 0; i < arrayListTelefonos.size(); i++) {
+                    ContentValues nuevoRegistroTelefono = new ContentValues();
+
+                    nuevoRegistroTelefono.put("ID", maxid);
+                    nuevoRegistroTelefono.put("TIPO", arrayListTelefonos.get(i).getTipo());
+                    nuevoRegistroTelefono.put("TELEFONO", arrayListTelefonos.get(i).getTelefono());
+
+                    dbe.anadirContacto(nuevoRegistroTelefono, "TELEFONO");
+                }
+
+
+                ContentValues nuevoRegistroDireccion = new ContentValues();
+                Direccion direccion = new Direccion(maxid, editTextCalle.getText().toString(), editTextNumero.getText().toString(),
+                        editTextPiso.getText().toString(), editTextPuerta.getText().toString(), editTextCodigo.getText().toString(),
+                        editTextCiudad.getText().toString(), spinnerProvincia.getSelectedItem().toString());
+
+
+                nuevoRegistroDireccion.put("ID", direccion.getId());
+                nuevoRegistroDireccion.put("CALLE", direccion.getCalle());
+                nuevoRegistroDireccion.put("NUMERO", direccion.getNumero());
+                nuevoRegistroDireccion.put("PISO", direccion.getPiso());
+                nuevoRegistroDireccion.put("PUERTA", direccion.getPuerta());
+                nuevoRegistroDireccion.put("CODIGO", direccion.getCodigoPostal());
+                nuevoRegistroDireccion.put("CIUDAD", direccion.getCiudad());
+                nuevoRegistroDireccion.put("PROVINCIA", direccion.getProvincia());
+                dbe.anadirContacto(nuevoRegistroDireccion, "DIRECCION");
+
+
+                mensajeNormalContacto();
+                finish();
+            }else{
+                mensajeContactoNoAñadido();
             }
-
-            for(int i = 0; i < arrayListNotas.size(); i++) {
-                ContentValues nuevoRegistroNotas = new ContentValues();
-                nuevoRegistroNotas.put("ID", maxid);
-                nuevoRegistroNotas.put("NOTA", arrayListNotas.get(i));
-                dbe.anadirContacto(nuevoRegistroNotas, "NOTAS");
-            }
-
-            for(int i = 0; i < arrayListTelefonos.size(); i++) {
-                ContentValues nuevoRegistroTelefono = new ContentValues();
-
-                nuevoRegistroTelefono.put("ID", maxid);
-                nuevoRegistroTelefono.put("TIPO", arrayListTelefonos.get(i).getTipo());
-                nuevoRegistroTelefono.put("TELEFONO", arrayListTelefonos.get(i).getTelefono());
-
-                dbe.anadirContacto(nuevoRegistroTelefono, "TELEFONO");
-            }
-
-
-            ContentValues nuevoRegistroDireccion = new ContentValues();
-            Direccion direccion = new Direccion(maxid, editTextCalle.getText().toString(), editTextNumero.getText().toString(),
-                    editTextPiso.getText().toString(), editTextPuerta.getText().toString(), editTextCodigo.getText().toString(),
-                    editTextCiudad.getText().toString(), spinnerProvincia.getSelectedItem().toString());
-
-
-            nuevoRegistroDireccion.put("ID", direccion.getId());
-            nuevoRegistroDireccion.put("CALLE", direccion.getCalle());
-            nuevoRegistroDireccion.put("NUMERO", direccion.getNumero());
-            nuevoRegistroDireccion.put("PISO", direccion.getPiso());
-            nuevoRegistroDireccion.put("PUERTA", direccion.getPuerta());
-            nuevoRegistroDireccion.put("CODIGO", direccion.getCodigoPostal());
-            nuevoRegistroDireccion.put("CIUDAD", direccion.getCiudad());
-            nuevoRegistroDireccion.put("PROVINCIA", direccion.getProvincia());
-            dbe.anadirContacto(nuevoRegistroDireccion, "DIRECCION");
-
-
-            mensajeNormalContacto();
-            finish();
-
 
         }
     }
@@ -542,11 +544,19 @@ public class Anadir extends AppCompatActivity {
 
 
 
-            public void mensajeContactoEditado()
+    public void mensajeContactoEditado()
     {
         Toast mensaje =
                 Toast.makeText(getApplicationContext(),
                         "Contacto editado correctamente", Toast.LENGTH_SHORT);
+        mensaje.show();
+    }
+
+    public void mensajeContactoNoAñadido()
+    {
+        Toast mensaje =
+                Toast.makeText(getApplicationContext(),
+                        "Tienes que rellenar minimo un campo identificativo", Toast.LENGTH_SHORT);
         mensaje.show();
     }
 

@@ -36,7 +36,11 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:text="@string/anadir"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+
+
+
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -55,21 +59,23 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:queryHint="@string/buscar" />
+                android:queryHint="@string/buscar"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <ListView
                 android:id="@+id/lsvContactos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:dividerHeight="1dp"
                 android:horizontalSpacing="3dp"
                 android:scrollingCache="true"
                 android:smoothScrollbar="true"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="3dp"
-
-
+                android:background="@null"
+                android:divider="@null"
+                android:dividerHeight="0dp"
 
                 />
 

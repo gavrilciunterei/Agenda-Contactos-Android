@@ -16,29 +16,33 @@ import android.util.DisplayMetrics;
 class Imagen {
 
 
-     private static Bitmap getScaledBitmap(String path, int destWidth, int destHeight) {
+     private static Bitmap getBitmapEscalado(String ruta) {
         BitmapFactory.Options options = new BitmapFactory.Options();
+        int tamañoNuevoAncho = 120;
+        int tamañoNuevoAlto = 120;
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
+        BitmapFactory.decodeFile(ruta, options);
         float srcWidth = options.outWidth;
         float srcHeight = options.outHeight;
         int inSampleSize = 1;
-        if (srcHeight > destHeight || srcWidth > destWidth) {
+        //en este apartado comprobamls si el tamño que tiene la foto es más grande que el que yo le doy, si es así hace un reescalado
+        if (srcHeight > tamañoNuevoAlto || srcWidth > tamañoNuevoAncho) {
+            //si es mas ancho que alto
             if (srcWidth > srcHeight) {
-                inSampleSize = Math.round(srcHeight / destHeight);
+                inSampleSize = Math.round(srcHeight / tamañoNuevoAlto);
             } else {
-                inSampleSize = Math.round(srcWidth / destWidth);
+                inSampleSize = Math.round(srcWidth / tamañoNuevoAncho);
             }
         }
         options = new BitmapFactory.Options();
         options.inSampleSize = inSampleSize;
-        return BitmapFactory.decodeFile(path, options);
+        return BitmapFactory.decodeFile(ruta, options);
     }
 
 
-     static Bitmap getCircularBitmap(String filePath){
+     static Bitmap getBitmapCirculrFoto(String ruta){
 
-        Bitmap bitmap = getScaledBitmap(filePath, (int) (150*0.7), (int) (160*0.7));
+        Bitmap bitmap = getBitmapEscalado(ruta);
 
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float diameterPixels = 30 * (metrics.densityDpi / 100f);
@@ -70,7 +74,7 @@ class Imagen {
 
 
 
-     static Bitmap generateCircleBitmap(String text){
+     static Bitmap getBitmapCircularString(String letra){
         final int textColor = 0xffffffff;
 
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -80,18 +84,18 @@ class Imagen {
         Bitmap output = Bitmap.createBitmap((int) diameterPixels, (int) diameterPixels,
                 Bitmap.Config.ARGB_8888);
 
-        // Create the canvas to draw on
+        // Creamos un canvas para dibujar
         Canvas canvas = new Canvas(output);
         canvas.drawARGB(0, 0, 0, 0);
 
-        // Draw the circle
+        // Dibuja el circulo
         final Paint paintC = new Paint();
         paintC.setAntiAlias(true);
         paintC.setColor(Color.GRAY);
         canvas.drawCircle(radiusPixels, radiusPixels, radiusPixels, paintC);
 
-        // Draw the text
-        if (text != null && text.length() > 0) {
+        // Dibuja el texto
+        if (letra != null && letra.length() > 0) {
             final Paint paintT = new Paint();
             paintT.setColor(textColor);
             paintT.setAntiAlias(true);
@@ -99,8 +103,8 @@ class Imagen {
             Typeface typeFace = Typeface.defaultFromStyle(Typeface.BOLD);
             paintT.setTypeface(typeFace);
             final Rect textBounds = new Rect();
-            paintT.getTextBounds(text, 0, text.length(), textBounds);
-            canvas.drawText(text, radiusPixels - textBounds.exactCenterX(), radiusPixels - textBounds.exactCenterY(), paintT);
+            paintT.getTextBounds(letra, 0, letra.length(), textBounds);
+            canvas.drawText(letra, radiusPixels - textBounds.exactCenterX(), radiusPixels - textBounds.exactCenterY(), paintT);
         }
 
         return output;

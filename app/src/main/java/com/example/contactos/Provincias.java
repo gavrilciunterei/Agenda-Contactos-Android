@@ -8,11 +8,12 @@ public class Provincias{
     private ArrayList<String> provincias;
 
     public Provincias() {
-        provincias = new ArrayList<String>();
+        provincias = new ArrayList<>();
         setProvincias();
     }
 
     private void setProvincias() {
+        provincias.add("");
         provincias.add("A Coruña");
         provincias.add("Álava");
         provincias.add("Albacete");

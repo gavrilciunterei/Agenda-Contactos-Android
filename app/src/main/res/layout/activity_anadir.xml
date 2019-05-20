@@ -151,7 +151,7 @@
                 android:layout_marginTop="7dp"
                 android:background="@drawable/rounded_corner"
                 android:textSize="17sp"
-
+                android:dividerHeight="1dp"
                 >
 
             </com.example.contactos.NonScrollListView>
@@ -195,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
-
+                android:dividerHeight="1dp"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:fontFamily="@font/mr"
@@ -249,6 +249,7 @@
                 android:fontFamily="@font/mr"
                 android:layout_marginTop="7dp"
                 android:background="@drawable/rounded_corner"
+                android:dividerHeight="1dp"
                 android:textSize="17sp"
                 >
 

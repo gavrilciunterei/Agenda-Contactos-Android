@@ -245,11 +245,9 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         arrayAdapterNotas = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notas);
         list_Notas.setAdapter(arrayAdapterNotas);
 
-        textViewDirCompleta.setText(dir.getCalle()+ " " + dir.getNumero() + " " + dir.getPiso() + " " + dir.getPuerta()+ " " +dir.getCiudad() +" "+ dir.getProvincia()+" "+ dir.getCodigoPostal());
-
-
-
-
+        String dirCompleta = dir.getCalle()+ " " + dir.getNumero() + " " + dir.getPiso() + " " + dir.getPuerta()+ " " +dir.getCiudad() +" "+ dir.getProvincia()+" "+ dir.getCodigoPostal();
+        dirCompleta = dirCompleta.trim().replaceAll(" +", " ");
+        textViewDirCompleta.setText(dirCompleta);
 
         cargarMapa();
 
@@ -325,7 +323,6 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
 
 
         String address = dir.getNumero() + " " + dir.getCalle()+ " " + dir.getCiudad() + " " + dir.getProvincia()+ " "  + dir.getCodigoPostal();
-
         Geocoder geoCoder = new Geocoder(this);
         double lat=0;
         double lng = 0;
@@ -338,6 +335,7 @@ public class Ver extends AppCompatActivity implements OnMapReadyCallback {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         LatLng dir = new LatLng(lat, lng);
         mapa.setMinZoomPreference(16);
