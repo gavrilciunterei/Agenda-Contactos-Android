@@ -247,9 +247,7 @@
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
+
 
             <fragment
                 android:id="@+id/mapa"
@@ -257,6 +255,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginRight="15dp"
             />
 
