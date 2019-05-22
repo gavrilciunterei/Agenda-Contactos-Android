@@ -54,7 +54,6 @@ class Imagen {
         final Rect rect = new Rect(0, 0, (int) diameterPixels, (int) diameterPixels);
         RectF rectF = new RectF(rect);
 
-
         final int color = 0xff424242;
         final Paint paint = new Paint();
         paint.setAntiAlias(true);

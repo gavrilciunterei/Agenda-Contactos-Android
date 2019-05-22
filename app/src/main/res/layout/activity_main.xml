@@ -37,8 +37,6 @@
                 android:text="@string/anadir"
                 android:textSize="30sp"
 
-
-
                 />
         </LinearLayout>
 
@@ -60,7 +58,9 @@
                 android:layout_height="match_parent"
                 android:queryHint="@string/buscar"
                 android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+
+                />
 
             <ListView
                 android:id="@+id/lsvContactos"
